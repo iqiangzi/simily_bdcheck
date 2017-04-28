@@ -13,3 +13,6 @@ from testCase.models import myUnitChrome
 from testCase.models import myUnitFirefox
 
 class RunHelp(myUnitChrome.UnitChrome):
+    def help(self):
+        pass
+
