@@ -5,7 +5,6 @@
 # @Site    : 
 # @File    : manualEntry.py
 # @Software: PyCharm
-from selenium import  webdriver
 from selenium.webdriver.common.by import By
 from testCase.pageObj.basePage import BasePage
 from time import sleep,strftime
@@ -20,6 +19,7 @@ class ManualEntry(BasePage):
     oldTaskBox = (By.CSS_SELECTOR,'#taskNameOld')    #选择已有任务输入模式
     oldTaskchoise1 = (By.CSS_SELECTOR,'#taskNameOldDown')  #下拉选项按钮
     oldTaskchoise = (By.CSS_SELECTOR,'body>.ac_results>ul>li:nth-child(1)')  #下拉选项的首个任务
+    oldTaskchoise1 = (By.CSS_SELECTOR,'body>.ac_results>ul>li:nth-child(2)')  #下拉选项的第二个任务
     oldTaskAlert = (By.CSS_SELECTOR,'#oldTaskAlert>.colRed') #输入已有任务的错误提示
     creatTaskALert = (By.CSS_SELECTOR,'#creatTaskAlert>.colRed') #创建新任务错误提示
     confirmTaskBtn = (By.CSS_SELECTOR,'#confirmTaskNameBtn') #确认任务名称按钮
@@ -70,7 +70,7 @@ class ManualEntry(BasePage):
     #点击下拉按钮
     def clickDropDownBtn(self):
         self.find_element(*self.oldTaskchoise1).click()
-        sleep(1)
+        sleep(2)
     #选择已有任务
     def clickOldTaskchoise(self):
         old_name = self.find_element(*self.oldTaskchoise).text
@@ -78,12 +78,19 @@ class ManualEntry(BasePage):
         self.find_element(*self.oldTaskchoise).click()
         sleep(2)
         return old_name
+    #选择已有任务，第二个
+    def clickSecendOldTaskchoise(self):
+        old_name = self.find_element(*self.oldTaskchoise1).text
+        sleep(2)
+        self.find_element(*self.oldTaskchoise1).click()
+        sleep(2)
+        return old_name
     #点击新建任务选择框
     def clickChooseBtn1(self):
         self.find_element(*self.chooseBtn1).click()
         sleep(2)
     #输入已存在的任务名称
-    def inputSameName(self):
+    def getSameName(self):
         #切换至已有任务
         self.clickChooseBtn()
         #获取已有任务名称
@@ -95,6 +102,55 @@ class ManualEntry(BasePage):
     #获取新建任务时的错误提示
     def getCreatTaskALert(self):
         return  self.find_element(*self.creatTaskALert).text
+    #得到字符超长的任务名
+    def getOverLongName(self):
+        long_name = "长度的测试"
+        long_name*=41
+        #print(len(long_name))
+        return long_name
+    #判断新建任务时的错误提示是否存在，如果存在返回flag=true，否则返回false
+    def isCreatAlertExist(self):
+        super(ManualEntry, self).is_element_visible(self.creatTaskALert)
+    #获取选择已有任务时的错误提示
+    def getOldTaskAlert(self):
+        return  self.find_element(*self.oldTaskAlert).text
+    #判断选择已有任务时的错误提示是否存在，如果存在返回flag=true，否则返回false
+    def isOldAlertExist(self):
+        flag = super(ManualEntry, self).is_element_visible(self.oldTaskAlert)
+        return flag
+    #输入已有任务名称
+    def inputOldTaskBox(self):
+        self.find_element(*self.oldTaskBox).clear()
+        self.find_element(*self.oldTaskBox).send_keys("不存在的任务名称")
+        sleep(2)
+    #新建任务点击修改
+    def clickModifyBtn(self):
+        self.find_element(*self.modifyTaskName).click()
+        sleep(2)
+    #选择已有任务点击重新选择
+    def clickRechoiseBtn(self):
+        self.find_element(*self.rechoiseBtn).click()
+        sleep(2)
+    #判断页面中某元素是否可点击
+    def isRechoiseClickable(self):
+        flag = super(ManualEntry,self).is_element_clickable(self.oldTaskchoise1)
+        #print(flag)
+        return flag
+    #手工录入过程
+    def manualEntryProcess(self):
+        self.clickManualDetectButton()
+        sleep(2)
+        self.clickChooseBtn()
+        self.clickDropDownBtn()
+        self.clickOldTaskchoise()
+        self.clickConfirmTaskBtn()
+
+
+
+
+
+if __name__=="__main__":
+   ManualEntry(BasePage).getOverLongName()
 
 
 

@@ -78,6 +78,19 @@ class BasePage(object):
             flag = False
         return flag
 
+    #判断某个元素是否可以触发点击事件
+    def is_element_clickable(self,element):
+        '''
+        element:页面元素位置
+        :return:
+        '''
+        try:
+            self.find_element(element).click()
+            flag = True
+        except Exception:
+            flag = False
+        return flag
+
     def wait_element_visible(self, time, element):
         '''
         等待元素出现，超过时间页面加载失败
