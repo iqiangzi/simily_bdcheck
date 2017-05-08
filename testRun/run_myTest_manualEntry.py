@@ -252,7 +252,7 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
             sleep(3)
 
 
-            sleep(50)
+
 
 
 if __name__=="__main__":
