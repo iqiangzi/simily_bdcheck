@@ -5,9 +5,14 @@
 # @Site    : 
 # @File    : manualEntry.py
 # @Software: PyCharm
+
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from util.commonUtils.fileOption import FilesOption
+from util.toolUtils.getPath import GetPath
 from testCase.pageObj.basePage import BasePage
 from time import sleep,strftime
+from util.toolUtils.txtOption import TxtOption
 
 class ManualEntry(BasePage):
     #获取页面元素位置
@@ -19,13 +24,15 @@ class ManualEntry(BasePage):
     oldTaskBox = (By.CSS_SELECTOR,'#taskNameOld')    #选择已有任务输入模式
     oldTaskchoise1 = (By.CSS_SELECTOR,'#taskNameOldDown')  #下拉选项按钮
     oldTaskchoise = (By.CSS_SELECTOR,'body>.ac_results>ul>li:nth-child(1)')  #下拉选项的首个任务
-    oldTaskchoise1 = (By.CSS_SELECTOR,'body>.ac_results>ul>li:nth-child(2)')  #下拉选项的第二个任务
+    oldTaskchoise2 = (By.CSS_SELECTOR,'body>.ac_results>ul>li:nth-child(2)')  #下拉选项的第二个任务
     oldTaskAlert = (By.CSS_SELECTOR,'#oldTaskAlert>.colRed') #输入已有任务的错误提示
     creatTaskALert = (By.CSS_SELECTOR,'#creatTaskAlert>.colRed') #创建新任务错误提示
     confirmTaskBtn = (By.CSS_SELECTOR,'#confirmTaskNameBtn') #确认任务名称按钮
     creatTaskName = (By.CSS_SELECTOR,'.collereTask>.taskName') #新建任务名称确认
     modifyTaskName = (By.CSS_SELECTOR,'.collereTask>#reNewTaskName') #修改任务名称按钮
     rechoiseBtn = (By.CSS_SELECTOR,'.collereTask>#reChoseOldTask') #重新选择任务按钮
+
+    #检测内容相关***********************************************************************************************
     paperName = (By.CSS_SELECTOR,'.colleSerch>.colletaskName>#paperName') #检测内容-篇名
     authorName = (By.CSS_SELECTOR,'.colleSerch>.colletaskName>#authorName') #检测内容-作者
     authorCompany = (By.CSS_SELECTOR,'.colleSerch>.colletaskName>#authorCompany') #检测内容-作者单位
@@ -37,6 +44,9 @@ class ManualEntry(BasePage):
     checkResultBtn = (By.CSS_SELECTOR,'#checkResult') #查看检测结果按钮
     reCreatBtn = (By.CSS_SELECTOR,'#reCreat') #继续创建新任务按钮
     mytestDetectState = (By.CSS_SELECTOR,'.collegeTable>tbody>tr:nth-child(2)>#forstate') #我的检测列表检测状态
+
+    #检测结果页面确认***********************************************************************************************
+
 
     #点击我的检测
     def clickMyTes(self):
@@ -80,9 +90,9 @@ class ManualEntry(BasePage):
         return old_name
     #选择已有任务，第二个
     def clickSecendOldTaskchoise(self):
-        old_name = self.find_element(*self.oldTaskchoise1).text
+        old_name = self.find_element(*self.oldTaskchoise2).text
         sleep(2)
-        self.find_element(*self.oldTaskchoise1).click()
+        self.find_element(*self.oldTaskchoise2).click()
         sleep(2)
         return old_name
     #点击新建任务选择框
@@ -138,15 +148,69 @@ class ManualEntry(BasePage):
         return flag
     #手工录入过程
     def manualEntryProcess(self):
-        self.clickManualDetectButton()
+        self.find_element(*self.manualDetectButton).click()
+        sleep(3)
+        self.find_element(*self.chooseBtn).click()
         sleep(2)
-        self.clickChooseBtn()
-        self.clickDropDownBtn()
-        self.clickOldTaskchoise()
-        self.clickConfirmTaskBtn()
-
-
-
+        self.find_element(*self.oldTaskchoise1).click()
+        sleep(2)
+        self.find_element(*self.oldTaskchoise).click()
+        sleep(2)
+        self.find_element(*self.confirmTaskBtn).click()
+        sleep(2)
+    #手工录入输入篇名
+    def inputPaperName(self,papaername):
+        name = strftime("%Y-%m-%d %H_%M_%S")
+        self.find_element(*self.paperName).clear()
+        self.find_element(*self.paperName).send_keys(papaername+"_"+name)
+        sleep(1)
+    #手工录入作者名称
+    def inputAuthorName(self,authorname):
+        self.find_element(*self.authorName).clear()
+        self.find_element(*self.authorName).send_keys(authorname)
+        sleep(1)
+    #手工录入作者单位
+    def inputAuthorCompany(self,company):
+        self.find_element(*self.authorCompany).clear()
+        self.find_element(*self.authorCompany).send_keys(company)
+        sleep(1)
+    #手工录入作者专业
+    def inputMajority(self,majority):
+        self.find_element(*self.majority).clear()
+        self.find_element(*self.majority).send_keys(majority)
+        sleep(1)
+    #手工录入作者导师
+    def inputTutor(self,tutor):
+        self.find_element(*self.tutor).clear()
+        self.find_element(*self.tutor).send_keys(tutor)
+        sleep(1)
+    #手工录入论文内容
+    def inputPaperContent(self,filename):
+        #self.find_element(*self.paperContent).clear()
+        #self.find_element(*self.paperContent).send_keys(Keys.TAB)
+        self.find_element(*self.paperContent).send_keys(filename)
+        #sleep(10)
+    #逐行读取文本内容并逐行写入文本框
+    def readAndInputContent(self,filename):
+        f = FilesOption()
+        g = GetPath()
+        manu = ManualEntry(self.driver)
+        filePath =g.getAbsoluteFilePath(filename,r"detectPaper\detect_file.txt")
+        print(filePath)
+        Flist = f.readFileContent(filePath)
+        #self.ManualNoText("文本信息正确开始检测","作者")
+        for i in range(0,len(Flist)):
+            con = Flist[i].decode('gbk')
+            con=con.replace("\t","")
+            manu.inputPaperContent(con)
+        sleep(2)
+    #点击开始检测按钮
+    def clickBeginDetectBtn(self):
+        self.find_element(*self.beginDetectBtn).click()
+        sleep(2)
+    #获取开始检测状态文本
+    def getDetectState(self):
+        return self.find_element(*self.detectState).text
 
 
 if __name__=="__main__":

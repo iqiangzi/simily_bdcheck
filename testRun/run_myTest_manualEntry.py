@@ -7,15 +7,14 @@
 # @Software: PyCharm
 from selenium import  webdriver
 import unittest
-from HTMLTestRunner import HTMLTestRunner
 from time import sleep
-from testCase.models import myUnitChrome
+from testCase.models import myUnitFirefox
 from testCase.models.userVer.userVer import UserVer
 from testCase.models.myTest.manualEntry import ManualEntry
 from testResult.getResultImage import getResultImage
 
 
-class RunManualEntry(myUnitChrome.UnitChrome):
+class RunManualEntry(myUnitFirefox.UnitFirefox):
 
     def login(self):
         userver=UserVer(self.driver)
@@ -236,14 +235,24 @@ class RunManualEntry(myUnitChrome.UnitChrome):
         self.login()
         me = ManualEntry(self.driver)
         me.clickMyTes()
-        #me.manualEntryProcess()
-        me.clickManualDetectButton()
-        sleep(2)
-        me.clickChooseBtn()
-        me.clickDropDownBtn()
-        me.clickOldTaskchoise()
-        me.clickConfirmTaskBtn()
-        sleep(10)
+        me.manualEntryProcess()
+        me.inputPaperName("手工录入")
+        me.inputAuthorName("海鸣威")
+        me.inputAuthorCompany("文学出版社")
+        me.inputMajority("文学专业")
+        me.inputTutor("修导师")
+        me.readAndInputContent("detect_file.txt")
+        me.clickBeginDetectBtn()
+        state = me.getDetectState()
+        try:
+            self.assertEqual(state,"开始检测","检测论文失败")
+        finally:
+            imagetest = getResultImage()
+            imagetest.insert_image(self.driver,"addContent_allField_succeed.jpg")
+            sleep(3)
+
+
+            sleep(50)
 
 
 if __name__=="__main__":
