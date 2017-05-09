@@ -9,11 +9,11 @@ import os
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
-
+from selenium.webdriver import ActionChains
 from testCase.models import myUnitFirefox
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC
-
+from time import sleep
 from util.toolUtils.getPath import GetPath
 
 
@@ -78,6 +78,19 @@ class BasePage(object):
             flag = False
         return flag
 
+    #判断某个元素是否可以触发点击事件
+    def is_element_clickable(self,element):
+        '''
+        element:页面元素位置
+        :return:
+        '''
+        try:
+            self.find_element(element).click()
+            flag = True
+        except Exception:
+            flag = False
+        return flag
+
     def wait_element_visible(self, time, element):
         '''
         等待元素出现，超过时间页面加载失败
@@ -97,6 +110,13 @@ class BasePage(object):
         ab_path = GetPath().getAbsoluteFilePath(fileName,filePath)
         flag = os.path.exists(ab_path)
         return flag
+    #鼠标悬停
+    def mouseHover(self,*loc):
+        hover_element = self.find_element(*loc)
+        ActionChains(self.driver).move_to_element(hover_element).perform()
+        sleep(2)
+
+
 
 if __name__=='__main__':
     s = BasePage(selenium_driver=webdriver.Firefox())

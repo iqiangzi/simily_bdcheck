@@ -35,7 +35,7 @@ class UserVer(BasePage):
         self.login_username(username)
         self.login_password(password)
         self.login_button()
-        sleep(5)
+        sleep(2)
 
     #登录用户名
     def login_username(self,username):
