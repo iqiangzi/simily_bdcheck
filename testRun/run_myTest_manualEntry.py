@@ -102,7 +102,7 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
             try:
                 self.assertTrue(me.isCreatAlertExist(),"没有错误提示")
                 over_long_alert = me.getCreatTaskALert()
-                self.assertEqual(over_long_alert,"任务名称最多xx字符","任务名称过长未提示")
+                self.assertEqual(over_long_alert,"任务名不能超过16位","任务名称过长未提示")
             finally:
                 imagetest = getResultImage()
                 imagetest.insert_image(self.driver,"creatNewTask_overlong.jpg")
@@ -206,7 +206,7 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"modifyCreatNewTask_isnull.jpg")
             sleep(3)
 
-    def atest_repeatSelectExistingTasks_succeed_run011(self):
+    def atest_repeatSelectExistingTasks_succeed_run11(self):
         '''选择已有任务,重新选择后，验证是否成功'''
         self.login()
         me = ManualEntry(self.driver)
@@ -230,7 +230,7 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"repeatSelectExistingTasks_succeed.jpg")
             sleep(3)
 
-    def test_addContent_allField_succeed_run012(self):
+    def atest_addContent_allField_succeed_run12(self):
         '''添加全部检测内容，点击开始检测'''
         self.login()
         me = ManualEntry(self.driver)
@@ -245,13 +245,196 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
         me.clickBeginDetectBtn()
         state = me.getDetectState()
         try:
-            self.assertEqual(state,"开始检测","检测论文失败")
+            self.assertEqual(state,"开始检测","论文未开始检测")
+            finish = me.isCheckResultBtnExist()
+            self.assertTrue(finish,"检测未完成")
+            succeed = me.getDetectSimilarity()
+            self.assertIn('%',succeed,"检测未成功")
         finally:
             imagetest = getResultImage()
             imagetest.insert_image(self.driver,"addContent_allField_succeed.jpg")
             sleep(3)
 
-
+    def atest_addContent_requiredField_succeed_run13(self):
+        '''添加必填项检测内容，点击开始检测'''
+        self.login()
+        me = ManualEntry(self.driver)
+        me.clickMyTes()
+        me.manualEntryProcess()
+        me.inputPaperName("手工录入")
+        me.inputAuthorName("海鸣威")
+        me.readAndInputContent("detect_file.txt")
+        me.clickBeginDetectBtn()
+        state = me.getDetectState()
+        try:
+            self.assertEqual(state,"开始检测","-----论文未开始检测-----")
+            finish = me.isCheckResultBtnExist()
+            self.assertTrue(finish,"-----论文检测未完成-----")
+            succeed = me.getDetectSimilarity()
+            self.assertIn('%',succeed,"-----论文检测未成功-----")
+        finally:
+            imagetest = getResultImage()
+            imagetest.insert_image(self.driver,"test_addContent_requiredField_succeed.jpg")
+            sleep(3)
+    def atest_addContent_paperName_isnull_run14(self):
+        '''必填项篇名未填写，点击开始检测，检测提示信息'''
+        self.login()
+        me = ManualEntry(self.driver)
+        me.clickMyTes()
+        me.manualEntryProcess()
+        me.inputAuthorName("海鸣威")
+        me.readAndInputContent("detect_file.txt")
+        me.clickBeginDetectBtn()
+        papaerName_alert = me.verifyExistAlert()
+        try:
+            self.assertEqual(papaerName_alert,'请输入篇名。','-----题名为空未提示-----')
+        finally:
+            imagetest = getResultImage()
+            imagetest.insert_image(self.driver,"addContent_paperName_isnull.jpg")
+            sleep(3)
+    def atest_addContent_authorName_isnull_run15(self):
+        '''必填项作者未填写，点击开始检测，检测提示信息'''
+        self.login()
+        me = ManualEntry(self.driver)
+        me.clickMyTes()
+        me.manualEntryProcess()
+        me.inputPaperName("手工录入")
+        me.readAndInputContent("detect_file.txt")
+        me.clickBeginDetectBtn()
+        papaerName_alert = me.verifyExistAlert()
+        try:
+            self.assertEqual(papaerName_alert,'请输入作者。','-----作者为空未提示-----')
+        finally:
+            imagetest = getResultImage()
+            imagetest.insert_image(self.driver,"addContent_authorName_isnull.jpg")
+            sleep(3)
+    def atest_addContent_content_isnull_run16(self):
+        '''必填项录入内容未填写，点击开始检测，检测提示信息'''
+        self.login()
+        me = ManualEntry(self.driver)
+        me.clickMyTes()
+        me.manualEntryProcess()
+        me.inputPaperName("手工录入")
+        me.inputAuthorName("海鸣威")
+        me.clickBeginDetectBtn()
+        papaerName_alert = me.verifyExistAlert()
+        try:
+            self.assertEqual(papaerName_alert,'请输入待检测内容。','-----录入内容为空未提示-----')
+        finally:
+            imagetest = getResultImage()
+            imagetest.insert_image(self.driver,"addContent_content_isnull.jpg")
+            sleep(3)
+    def atest_addContent_content_less200_run17(self):
+        '''必填项录入内容填写少于200字符，点击开始检测，检测提示信息'''
+        self.login()
+        me = ManualEntry(self.driver)
+        me.clickMyTes()
+        me.manualEntryProcess()
+        me.inputPaperName("手工录入")
+        me.inputAuthorName("海鸣威")
+        me.readAndInputContent("detect_file_less200.txt")
+        me.clickBeginDetectBtn()
+        papaerName_alert = me.verifyExistAlert()
+        try:
+            self.assertEqual(papaerName_alert,'待检测内容不得少于200字','-----录入内容少于200字未提示-----')
+        finally:
+            imagetest = getResultImage()
+            imagetest.insert_image(self.driver,"addContent_content_less200.jpg")
+            sleep(3)
+    def atest_addContent_paperName_overlength_run18(self):
+        '''篇名输入内容过长，点击开始检测，检测提示信息'''
+        self.login()
+        me = ManualEntry(self.driver)
+        me.clickMyTes()
+        me.manualEntryProcess()
+        me.readAndInputBigData("content_101.txt","paperName")
+        me.inputAuthorName("海鸣威")
+        me.readAndInputContent("detect_file.txt")
+        me.clickBeginDetectBtn()
+        papaerName_alert = me.verifyExistAlert()
+        try:
+            self.assertEqual(papaerName_alert,'篇名长度不能超过100字符','-----篇名长度过长未提示-----')
+        finally:
+            imagetest = getResultImage()
+            imagetest.insert_image(self.driver,"addContent_paperName_overlength.jpg")
+            sleep(3)
+    def atest_addContent_authorName_overlength_run19(self):
+        '''作者输入内容过长，点击开始检测，检测提示信息'''
+        self.login()
+        me = ManualEntry(self.driver)
+        me.clickMyTes()
+        me.manualEntryProcess()
+        me.inputPaperName("手工录入")
+        me.readAndInputBigData("content_21.txt","authorName")
+        me.readAndInputContent("detect_file.txt")
+        me.clickBeginDetectBtn()
+        papaerName_alert = me.verifyExistAlert()
+        try:
+            self.assertEqual(papaerName_alert,'作者长度不能超过20字符','-----作者长度过长未提示-----')
+        finally:
+            imagetest = getResultImage()
+            imagetest.insert_image(self.driver,"addContent_authorName_overlength.jpg")
+            sleep(3)
+    def atest_addContent_authorCompany_overlength_run20(self):
+        '''作者单位输入内容过长，点击开始检测，检测提示信息'''
+        self.login()
+        me = ManualEntry(self.driver)
+        me.clickMyTes()
+        me.manualEntryProcess()
+        me.inputPaperName("手工录入")
+        me.inputAuthorName("海鸣威")
+        me.readAndInputBigData("content_101.txt","authorCompany")
+        me.readAndInputContent("detect_file.txt")
+        me.clickBeginDetectBtn()
+        try:
+            alert_exist = me.is_alert_exist()
+            self.assertTrue(alert_exist,"-----作者单位长度过长未提示-----")
+            papaerName_alert = me.verifyExistAlert()
+            self.assertEqual(papaerName_alert,'作者单位长度不能超过100字符','-----作者单位长度过长未提示-----')
+        finally:
+            imagetest = getResultImage()
+            imagetest.insert_image(self.driver,"addContent_authorCompany_overlength.jpg")
+            sleep(3)
+    def atest_addContent_majority_overlength_run21(self):
+        '''专业输入内容过长，点击开始检测，检测提示信息'''
+        self.login()
+        me = ManualEntry(self.driver)
+        me.clickMyTes()
+        me.manualEntryProcess()
+        me.inputPaperName("手工录入")
+        me.inputAuthorName("海鸣威")
+        me.readAndInputBigData("content_101.txt","majority")
+        me.readAndInputContent("detect_file.txt")
+        me.clickBeginDetectBtn()
+        try:
+            alert_exist = me.is_alert_exist()
+            self.assertTrue(alert_exist,"-----专业长度过长未提示-----")
+            papaerName_alert = me.verifyExistAlert()
+            self.assertEqual(papaerName_alert,'专业长度不能超过100字符','-----专业长度过长未提示-----')
+        finally:
+            imagetest = getResultImage()
+            imagetest.insert_image(self.driver,"addContent_majority_overlength.jpg")
+            sleep(3)
+    def test_addContent_tutor_overlength_run22(self):
+        '''导师输入内容过长，点击开始检测，检测提示信息'''
+        self.login()
+        me = ManualEntry(self.driver)
+        me.clickMyTes()
+        me.manualEntryProcess()
+        me.inputPaperName("手工录入")
+        me.inputAuthorName("海鸣威")
+        me.readAndInputBigData("content_21.txt","tutor")
+        me.readAndInputContent("detect_file.txt")
+        me.clickBeginDetectBtn()
+        try:
+            alert_exist = me.is_alert_exist()
+            self.assertTrue(alert_exist,"-----导师长度过长未提示-----")
+            papaerName_alert = me.verifyExistAlert()
+            self.assertEqual(papaerName_alert,'导师长度不能超过100字符','-----导师长度过长未提示-----')
+        finally:
+            imagetest = getResultImage()
+            imagetest.insert_image(self.driver,"addContent_tutor_overlength.jpg")
+            sleep(3)
 
 
 

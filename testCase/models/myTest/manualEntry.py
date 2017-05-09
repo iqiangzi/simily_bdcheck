@@ -11,7 +11,7 @@ from selenium.webdriver.common.keys import Keys
 from util.commonUtils.fileOption import FilesOption
 from util.toolUtils.getPath import GetPath
 from testCase.pageObj.basePage import BasePage
-from time import sleep,strftime
+from time import sleep,strftime,time
 from util.toolUtils.txtOption import TxtOption
 
 class ManualEntry(BasePage):
@@ -41,6 +41,7 @@ class ManualEntry(BasePage):
     paperContent = (By.CSS_SELECTOR,'.colleSerch>.colletaskName>#paperContent') #检测内容-录入内容
     beginDetectBtn = (By.CSS_SELECTOR,'#beginCheck') #开始检测按钮
     detectState = (By.CSS_SELECTOR,'#uploadPaperList>table>tbody>tr:nth-child(2)>.checkstate') #开始检测状态
+    detectSimilarity = (By.CSS_SELECTOR,'#uploadPaperList>table>tbody>tr:nth-child(2)>.similarity') #检测页面的相似比
     checkResultBtn = (By.CSS_SELECTOR,'#checkResult') #查看检测结果按钮
     reCreatBtn = (By.CSS_SELECTOR,'#reCreat') #继续创建新任务按钮
     mytestDetectState = (By.CSS_SELECTOR,'.collegeTable>tbody>tr:nth-child(2)>#forstate') #我的检测列表检测状态
@@ -115,7 +116,7 @@ class ManualEntry(BasePage):
     #得到字符超长的任务名
     def getOverLongName(self):
         long_name = "长度的测试"
-        long_name*=41
+        long_name*=4
         #print(len(long_name))
         return long_name
     #判断新建任务时的错误提示是否存在，如果存在返回flag=true，否则返回false
@@ -195,7 +196,7 @@ class ManualEntry(BasePage):
         f = FilesOption()
         g = GetPath()
         manu = ManualEntry(self.driver)
-        filePath =g.getAbsoluteFilePath(filename,r"detectPaper\detect_file.txt")
+        filePath =g.getAbsoluteFilePath(filename,r"detectPaper\%s"%filename)
         print(filePath)
         Flist = f.readFileContent(filePath)
         #self.ManualNoText("文本信息正确开始检测","作者")
@@ -211,7 +212,65 @@ class ManualEntry(BasePage):
     #获取开始检测状态文本
     def getDetectState(self):
         return self.find_element(*self.detectState).text
-
+    #获取检测成功后的相似比
+    def getDetectSimilarity(self):
+        return self.find_element(*self.detectSimilarity).text
+    #判断查看检测结果按钮是否出现，没出现则继续等待3min
+    def isCheckResultBtnExist(self):
+        flag = True
+        star = time()
+        a = 0
+        while flag:
+            isVisiable = super(ManualEntry, self).is_element_visible(self.checkResultBtn)
+            end = time()
+            wait_time = int(end-star)
+            if isVisiable == True:
+                print("-----------检测完成！-----------")
+                return isVisiable
+            elif isVisiable == False:
+                print("等待检测: %ss"%a)
+                if wait_time >= 90:
+                    print("----------等待检测超时！----------")
+                    return isVisiable
+                else:
+                    a+=1
+                    sleep(1)
+                    continue
+    #判断是否有alert弹窗
+    def verifyExistAlert(self):
+        text = super(ManualEntry,self).confirm_broserAlert()
+        print(text)
+        return text
+    #输入大文本内容
+    def readAndInputBigData(self,filename,fieldname):
+        f = FilesOption()
+        g = GetPath()
+        manu = ManualEntry(self.driver)
+        filePath =g.getAbsoluteFilePath(filename,r"detectPaper\%s"%filename)
+        print(filePath)
+        Flist = f.readFileContent(filePath)
+        #self.ManualNoText("文本信息正确开始检测","作者")
+        for i in range(0,len(Flist)):
+            con = Flist[i].decode('gbk')
+            con=con.replace("\t","")
+            if fieldname == "paperName":
+                manu.inputPaperName(con)
+            elif fieldname == "authorName":
+                manu.inputAuthorName(con)
+            elif fieldname == "authorCompany":
+                manu.inputAuthorCompany(con)
+            elif fieldname == "majority":
+                manu.inputMajority(con)
+            elif fieldname == "tutor":
+                manu.inputTutor(con)
+        sleep(2)
+    #判断是否有提示框
+    def is_alert_exist(self):
+        try:
+            super(ManualEntry,self).confirm_broserAlert()
+            return True
+        except Exception:
+            return False
 
 if __name__=="__main__":
    ManualEntry(BasePage).getOverLongName()
