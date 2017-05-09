@@ -99,12 +99,12 @@ class StudentAccount(BasePage):
 
     #调用autoit生成的exe，并传入浏览器、需要上传至页面文件的地址两个参数
     def uploadFile_para(self,browserName,filePath):
-        ab_path = GetPath().getAbsoluteFilePath("testvb.exe",r"studentsAccountUploadApps\testvb.exe")
+        ab_path = GetPath().getAbsoluteFilePath("testvb.exe",r"uploadApp\testvb.exe")
         #os.system("./../testData/massProduceUploadApps/testvb.exe"+ " "+browserName+" "+filePath)
-        #print(ab_path+ " "+browserName+" "+filePath)
-        print('''"%s" "%s" "%s"''' % (ab_path,browserName,filePath))
-        os.system('''"%s" "%s" "%s"'''% (ab_path,browserName,filePath))
-        #os.system(ab_path+ " "+browserName+" "+filePath)
+        print(ab_path+ " "+browserName+" "+filePath)
+        #print('''"%s" "%s" "%s"''' % (ab_path,browserName,filePath))
+        #os.system('''"%s" "%s" "%s"'''% (ab_path,browserName,filePath))
+        os.system(ab_path+ " "+browserName+" "+filePath)
 
     #获取上传文件的绝对路径
     def getFilePath(self,filename):
