@@ -9,11 +9,11 @@ import os
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
-
+from selenium.webdriver import ActionChains
 from testCase.models import myUnitFirefox
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC
-
+from time import sleep
 from util.toolUtils.getPath import GetPath
 
 
@@ -110,6 +110,13 @@ class BasePage(object):
         ab_path = GetPath().getAbsoluteFilePath(fileName,filePath)
         flag = os.path.exists(ab_path)
         return flag
+    #鼠标悬停
+    def mouseHover(self,*loc):
+        hover_element = self.find_element(*loc)
+        ActionChains(self.driver).move_to_element(hover_element).perform()
+        sleep(2)
+
+
 
 if __name__=='__main__':
     s = BasePage(selenium_driver=webdriver.Firefox())

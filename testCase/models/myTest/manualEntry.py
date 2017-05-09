@@ -7,12 +7,11 @@
 # @Software: PyCharm
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from util.commonUtils.fileOption import FilesOption
 from util.toolUtils.getPath import GetPath
 from testCase.pageObj.basePage import BasePage
-from time import sleep,strftime,time
-from util.toolUtils.txtOption import TxtOption
+from time import sleep,strftime
+
 
 class ManualEntry(BasePage):
     #获取页面元素位置
@@ -45,9 +44,13 @@ class ManualEntry(BasePage):
     checkResultBtn = (By.CSS_SELECTOR,'#checkResult') #查看检测结果按钮
     reCreatBtn = (By.CSS_SELECTOR,'#reCreat') #继续创建新任务按钮
     mytestDetectState = (By.CSS_SELECTOR,'.collegeTable>tbody>tr:nth-child(2)>#forstate') #我的检测列表检测状态
+    checkResultTaskName = (By.CSS_SELECTOR,'.paperLguide>b') #查看检测结果页面的任务名称
 
     #检测结果页面确认***********************************************************************************************
 
+    accountManageTab = (By.CSS_SELECTOR,'#manageCenterList>li:nth-child(1)>a') #账号管理导航按钮
+    manageCenter= (By.CSS_SELECTOR,'#manageCenter>a') #管理中心按钮
+    remainArticleNum = (By.CSS_SELECTOR,'#surplusCheckCount') #剩余篇数
 
     #点击我的检测
     def clickMyTes(self):
@@ -155,10 +158,11 @@ class ManualEntry(BasePage):
         sleep(2)
         self.find_element(*self.oldTaskchoise1).click()
         sleep(2)
-        self.find_element(*self.oldTaskchoise).click()
+        name = self.clickOldTaskchoise()
         sleep(2)
         self.find_element(*self.confirmTaskBtn).click()
         sleep(2)
+        return  name
     #手工录入输入篇名
     def inputPaperName(self,papaername):
         name = strftime("%Y-%m-%d %H_%M_%S")
@@ -209,6 +213,9 @@ class ManualEntry(BasePage):
     def clickBeginDetectBtn(self):
         self.find_element(*self.beginDetectBtn).click()
         sleep(2)
+
+    '''**********************************************开始检测论文**********************************************************'''
+
     #获取开始检测状态文本
     def getDetectState(self):
         return self.find_element(*self.detectState).text
@@ -218,22 +225,22 @@ class ManualEntry(BasePage):
     #判断查看检测结果按钮是否出现，没出现则继续等待3min
     def isCheckResultBtnExist(self):
         flag = True
-        star = time()
-        a = 0
+        #star = time()
+        wait_time = 0
         while flag:
             isVisiable = super(ManualEntry, self).is_element_visible(self.checkResultBtn)
-            end = time()
-            wait_time = int(end-star)
+            #end = time()
+            #wait_time = int(end-star)
             if isVisiable == True:
                 print("-----------检测完成！-----------")
                 return isVisiable
             elif isVisiable == False:
-                print("等待检测: %ss"%a)
-                if wait_time >= 90:
+                print("等待检测: %ss"%wait_time)
+                if wait_time >= 180:
                     print("----------等待检测超时！----------")
                     return isVisiable
                 else:
-                    a+=1
+                    wait_time+=1
                     sleep(1)
                     continue
     #判断是否有alert弹窗
@@ -271,6 +278,39 @@ class ManualEntry(BasePage):
             return True
         except Exception:
             return False
+    #点击查看检测结果
+    def clickCheckResultBtn(self):
+        self.find_element(*self.checkResultBtn).click()
+        sleep(3)
+    #获取查看检测结果页面该论文所在任务的名称
+    def getTaskName(self):
+        return self.find_element(*self.checkResultTaskName).text
+    #点击重新创建新任务按钮
+    def clickReCreatBtn(self):
+        self.find_element(*self.reCreatBtn).click()
+        sleep(2)
+    #判断是否跳回检测页面，确定任务名称按钮是否存在
+    def isConfirmTaskBtnExist(self):
+        flag = super(ManualEntry,self).is_element_visible(self.confirmTaskBtn)
+        return flag
+
+    '''************************************获取管理中心-账户管理下的剩余篇数信息************************************************'''
+
+    #鼠标悬停在管理中心上
+    def hoverOnManageCenter(self):
+        super(ManualEntry, self).mouseHover(*self.manageCenter)
+    #点击账户管理
+    def clickAccountManegeTab(self):
+        self.find_element(*self.accountManageTab).click()
+        sleep(2)
+    #得到剩余篇数
+    def getRemainArticleNum(self):
+        self.hoverOnManageCenter()
+        self.clickAccountManegeTab()
+        num = self.find_element(*self.remainArticleNum).text
+        print('剩余篇数：'+num)
+        return num
+
 
 if __name__=="__main__":
    ManualEntry(BasePage).getOverLongName()

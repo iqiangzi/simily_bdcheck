@@ -20,7 +20,7 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
         userver=UserVer(self.driver)
         userver.userLogin("collegecheck","f")
 
-    def atest_creatNewTask_succeed_run01(self):
+    def test_creatNewTask_succeed_run01(self):
         '''新建任务成功'''
         self.login()
         me = ManualEntry(self.driver)
@@ -31,13 +31,13 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
         me.clickConfirmTaskBtn()
         confirm_name = me.getCreatTaskName()
         try:
-            self.assertEqual(task_name,confirm_name,"新建任务失败")
+            self.assertEqual(task_name,confirm_name,"-----新建任务失败-----")
         finally:
             imagetest = getResultImage()
             imagetest.insert_image(self.driver,"creatNewTask_succeeful.jpg")
             sleep(3)
 
-    def atest_selectExistingTasks_succeed_run02(self):
+    def test_selectExistingTasks_succeed_run02(self):
         '''选择已有任务成功'''
         self.login()
         me = ManualEntry(self.driver)
@@ -50,13 +50,13 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
         me.clickConfirmTaskBtn()
         confirm_name = me.getCreatTaskName()
         try:
-            self.assertEqual(old_name,confirm_name,"选择已有任务失败")
+            self.assertEqual(old_name,confirm_name,"-----选择已有任务失败-----")
         finally:
             imagetest = getResultImage()
             imagetest.insert_image(self.driver,"selectExistingTasks_succeed.jpg")
             sleep(3)
 
-    def atest_creatNewTask_sameName_run03(self):
+    def test_creatNewTask_sameName_run03(self):
         '''新建任务，任务名称重复'''
         self.login()
         me = ManualEntry(self.driver)
@@ -66,15 +66,15 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
         me.inputCreatTaskBox(old_name)
         me.clickConfirmTaskBtn()
         try:
-            self.assertTrue(me.isCreatAlertExist(),"没有错误提示")
+            self.assertTrue(me.isCreatAlertExist(),"-----没有错误提示-----")
             same_name_alert = me.getCreatTaskALert()
-            self.assertEqual(same_name_alert,"您已创建过该任务；请重新创建或在已有任务中选择","名称重复未提示")
+            self.assertEqual(same_name_alert,"您已创建过该任务；请重新创建或在已有任务中选择","-----名称重复未提示-----")
         finally:
             imagetest = getResultImage()
             imagetest.insert_image(self.driver,"creatNewTask_sameName.jpg")
             sleep(3)
 
-    def atest_creatNewTask_isnull_run04(self):
+    def test_creatNewTask_isnull_run04(self):
             '''新建任务，任务名称为空'''
             self.login()
             me = ManualEntry(self.driver)
@@ -82,15 +82,15 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
             me.clickManualDetectButton()
             me.clickConfirmTaskBtn()
             try:
-                self.assertTrue(me.isCreatAlertExist(),"没有错误提示")
+                self.assertTrue(me.isCreatAlertExist(),"-----没有错误提示-----")
                 is_null_alert = me.getCreatTaskALert()
-                self.assertEqual(is_null_alert,"任务名不能为空","任务名称为空未提示")
+                self.assertEqual(is_null_alert,"任务名不能为空","-------任务名称为空未提示--------")
             finally:
                 imagetest = getResultImage()
                 imagetest.insert_image(self.driver,"creatNewTask_isnull.jpg")
                 sleep(3)
 
-    def atest_creatNewTask_overlong_run05(self):
+    def test_creatNewTask_overlong_run05(self):
             '''新建任务，任务名称过长'''
             self.login()
             me = ManualEntry(self.driver)
@@ -100,15 +100,15 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
             me.inputCreatTaskBox(task_name)
             me.clickConfirmTaskBtn()
             try:
-                self.assertTrue(me.isCreatAlertExist(),"没有错误提示")
+                self.assertTrue(me.isCreatAlertExist(),"-----没有错误提示-----")
                 over_long_alert = me.getCreatTaskALert()
-                self.assertEqual(over_long_alert,"任务名不能超过16位","任务名称过长未提示")
+                self.assertEqual(over_long_alert,"任务名不能超过16位","-------任务名称过长未提示-------")
             finally:
                 imagetest = getResultImage()
                 imagetest.insert_image(self.driver,"creatNewTask_overlong.jpg")
                 sleep(3)
 
-    def atest_selectExistingTasks_notExist_run06(self):
+    def test_selectExistingTasks_notExist_run06(self):
         '''输入的已有任务名称不存在'''
         self.login()
         me = ManualEntry(self.driver)
@@ -119,15 +119,15 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
         me.inputOldTaskBox()
         me.clickConfirmTaskBtn()
         try:
-            self.assertTrue(me.isOldAlertExist,"没有错误提示")
+            self.assertTrue(me.isOldAlertExist,"-----没有错误提示-----")
             not_exist_alert = me.getOldTaskAlert()
-            self.assertEqual(not_exist_alert,"没有您输入的已有任务","选择已有任务失败")
+            self.assertEqual(not_exist_alert,"没有您输入的已有任务","---------选择已有任务失败---------")
         finally:
             imagetest = getResultImage()
             imagetest.insert_image(self.driver,"selectExistingTasks_notExist.jpg")
             sleep(3)
 
-    def atest_selectExistingTasks_isnull_run07(self):
+    def test_selectExistingTasks_isnull_run07(self):
         '''不选择已有任务，直接点击'''
         self.login()
         me = ManualEntry(self.driver)
@@ -137,15 +137,15 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
         me.clickChooseBtn()
         me.clickConfirmTaskBtn()
         try:
-            self.assertTrue(me.isOldAlertExist,"没有错误提示")
+            self.assertTrue(me.isOldAlertExist,"-----没有错误提示-----")
             is_null_alert = me.getOldTaskAlert()
-            self.assertEqual(is_null_alert,"没有您输入的已有任务","选择已有任务失败")
+            self.assertEqual(is_null_alert,"没有您输入的已有任务","-------选择已有任务失败-------")
         finally:
             imagetest = getResultImage()
             imagetest.insert_image(self.driver,"selectExistingTasks_isnull.jpg")
             sleep(3)
 
-    def atest_modifyCreatNewTask_succeed_run08(self):
+    def test_modifyCreatNewTask_succeed_run08(self):
         '''新建任务后，对任务名称进行修改'''
         self.login()
         me = ManualEntry(self.driver)
@@ -160,13 +160,13 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
         me.clickConfirmTaskBtn()
         confirm_name = me.getCreatTaskName()
         try:
-            self.assertEqual(modify_name,confirm_name,"修改任务名称失败")
+            self.assertEqual(modify_name,confirm_name,"------修改任务名称失败--------")
         finally:
             imagetest = getResultImage()
             imagetest.insert_image(self.driver,"modifyCreatNewTask_succeed.jpg")
             sleep(3)
 
-    def atest_modifyCreatNewTask_samename_run09(self):
+    def test_modifyCreatNewTask_samename_run09(self):
         '''新建任务后，修改任务名称名称重复的提示验证'''
         self.login()
         me = ManualEntry(self.driver)
@@ -180,13 +180,13 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
         me.clickConfirmTaskBtn()
         same_name_alert = me.getCreatTaskALert()
         try:
-            self.assertEqual(same_name_alert,"您已创建过该任务；请重新创建或在已有任务中选择","任务名称重复未提示")
+            self.assertEqual(same_name_alert,"您已创建过该任务；请重新创建或在已有任务中选择","-----任务名称重复未提示--------")
         finally:
             imagetest = getResultImage()
             imagetest.insert_image(self.driver,"modifyCreatNewTask_samename.jpg")
             sleep(3)
 
-    def atest_modifyCreatNewTask_isnull_run10(self):
+    def test_modifyCreatNewTask_isnull_run10(self):
         '''新建任务后，修改任务名称名为空的提示验证'''
         self.login()
         me = ManualEntry(self.driver)
@@ -200,13 +200,13 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
         me.clickConfirmTaskBtn()
         same_name_alert = me.getCreatTaskALert()
         try:
-            self.assertEqual(same_name_alert," 任务名不能为空","任务名称为空未提示")
+            self.assertEqual(same_name_alert," --------任务名不能为空","任务名称为空未提示-----------")
         finally:
             imagetest = getResultImage()
             imagetest.insert_image(self.driver,"modifyCreatNewTask_isnull.jpg")
             sleep(3)
 
-    def atest_repeatSelectExistingTasks_succeed_run11(self):
+    def test_repeatSelectExistingTasks_succeed_run11(self):
         '''选择已有任务,重新选择后，验证是否成功'''
         self.login()
         me = ManualEntry(self.driver)
@@ -224,13 +224,13 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
             rechoise_name = me.clickSecendOldTaskchoise()
             me.clickConfirmTaskBtn()
             confirm_name = me.getCreatTaskName()
-            self.assertEqual(rechoise_name,confirm_name,"重新选择已有任务失败")
+            self.assertEqual(rechoise_name,confirm_name,"--------重新选择已有任务失败----------")
         finally:
             imagetest = getResultImage()
             imagetest.insert_image(self.driver,"repeatSelectExistingTasks_succeed.jpg")
             sleep(3)
 
-    def atest_addContent_allField_succeed_run12(self):
+    def test_addContent_allField_succeed_run12(self):
         '''添加全部检测内容，点击开始检测'''
         self.login()
         me = ManualEntry(self.driver)
@@ -245,17 +245,17 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
         me.clickBeginDetectBtn()
         state = me.getDetectState()
         try:
-            self.assertEqual(state,"开始检测","论文未开始检测")
+            self.assertEqual(state,"开始检测","-------论文未开始检测--------")
             finish = me.isCheckResultBtnExist()
-            self.assertTrue(finish,"检测未完成")
+            self.assertTrue(finish,"------检测未完成--------")
             succeed = me.getDetectSimilarity()
-            self.assertIn('%',succeed,"检测未成功")
+            self.assertIn('%',succeed,"-------检测未成功--------")
         finally:
             imagetest = getResultImage()
             imagetest.insert_image(self.driver,"addContent_allField_succeed.jpg")
             sleep(3)
 
-    def atest_addContent_requiredField_succeed_run13(self):
+    def test_addContent_requiredField_succeed_run13(self):
         '''添加必填项检测内容，点击开始检测'''
         self.login()
         me = ManualEntry(self.driver)
@@ -276,7 +276,8 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
             imagetest = getResultImage()
             imagetest.insert_image(self.driver,"test_addContent_requiredField_succeed.jpg")
             sleep(3)
-    def atest_addContent_paperName_isnull_run14(self):
+
+    def test_addContent_paperName_isnull_run14(self):
         '''必填项篇名未填写，点击开始检测，检测提示信息'''
         self.login()
         me = ManualEntry(self.driver)
@@ -292,7 +293,8 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
             imagetest = getResultImage()
             imagetest.insert_image(self.driver,"addContent_paperName_isnull.jpg")
             sleep(3)
-    def atest_addContent_authorName_isnull_run15(self):
+
+    def test_addContent_authorName_isnull_run15(self):
         '''必填项作者未填写，点击开始检测，检测提示信息'''
         self.login()
         me = ManualEntry(self.driver)
@@ -308,7 +310,8 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
             imagetest = getResultImage()
             imagetest.insert_image(self.driver,"addContent_authorName_isnull.jpg")
             sleep(3)
-    def atest_addContent_content_isnull_run16(self):
+
+    def test_addContent_content_isnull_run16(self):
         '''必填项录入内容未填写，点击开始检测，检测提示信息'''
         self.login()
         me = ManualEntry(self.driver)
@@ -324,7 +327,8 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
             imagetest = getResultImage()
             imagetest.insert_image(self.driver,"addContent_content_isnull.jpg")
             sleep(3)
-    def atest_addContent_content_less200_run17(self):
+
+    def test_addContent_content_less200_run17(self):
         '''必填项录入内容填写少于200字符，点击开始检测，检测提示信息'''
         self.login()
         me = ManualEntry(self.driver)
@@ -341,7 +345,8 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
             imagetest = getResultImage()
             imagetest.insert_image(self.driver,"addContent_content_less200.jpg")
             sleep(3)
-    def atest_addContent_paperName_overlength_run18(self):
+
+    def test_addContent_paperName_overlength_run18(self):
         '''篇名输入内容过长，点击开始检测，检测提示信息'''
         self.login()
         me = ManualEntry(self.driver)
@@ -358,7 +363,8 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
             imagetest = getResultImage()
             imagetest.insert_image(self.driver,"addContent_paperName_overlength.jpg")
             sleep(3)
-    def atest_addContent_authorName_overlength_run19(self):
+
+    def test_addContent_authorName_overlength_run19(self):
         '''作者输入内容过长，点击开始检测，检测提示信息'''
         self.login()
         me = ManualEntry(self.driver)
@@ -375,7 +381,8 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
             imagetest = getResultImage()
             imagetest.insert_image(self.driver,"addContent_authorName_overlength.jpg")
             sleep(3)
-    def atest_addContent_authorCompany_overlength_run20(self):
+
+    def test_addContent_authorCompany_overlength_run20(self):
         '''作者单位输入内容过长，点击开始检测，检测提示信息'''
         self.login()
         me = ManualEntry(self.driver)
@@ -395,7 +402,8 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
             imagetest = getResultImage()
             imagetest.insert_image(self.driver,"addContent_authorCompany_overlength.jpg")
             sleep(3)
-    def atest_addContent_majority_overlength_run21(self):
+
+    def test_addContent_majority_overlength_run21(self):
         '''专业输入内容过长，点击开始检测，检测提示信息'''
         self.login()
         me = ManualEntry(self.driver)
@@ -415,6 +423,7 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
             imagetest = getResultImage()
             imagetest.insert_image(self.driver,"addContent_majority_overlength.jpg")
             sleep(3)
+
     def test_addContent_tutor_overlength_run22(self):
         '''导师输入内容过长，点击开始检测，检测提示信息'''
         self.login()
@@ -436,6 +445,130 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"addContent_tutor_overlength.jpg")
             sleep(3)
 
+    def test_detectpaper_wordnum_less5w_run23(self):
+        '''检测少于5W字的论文，验证扣除篇数是否为1'''
+        self.login()
+        me = ManualEntry(self.driver)
+        remainnum_befdetect = int(me.getRemainArticleNum())
+        me.clickMyTes()
+        me.manualEntryProcess()
+        me.inputPaperName("手工录入_less5W")
+        me.inputAuthorName("海鸣威")
+        me.readAndInputContent("detect_file_less5w.txt")
+        me.clickBeginDetectBtn()
+        state = me.getDetectState()
+        try:
+            self.assertEqual(state,"开始检测","-----论文未开始检测-----")
+            finish = me.isCheckResultBtnExist()
+            self.assertTrue(finish,"-----论文检测未完成-----")
+            succeed = me.getDetectSimilarity()
+            self.assertIn('%',succeed,"-----论文检测未成功-----")
+            remainnum_aftdetect = int(me.getRemainArticleNum())
+            self.assertEqual(remainnum_befdetect-remainnum_aftdetect,int('1'),'-----扣除篇数错误，5w字以下应扣除1篇-----')
+        finally:
+            imagetest = getResultImage()
+            imagetest.insert_image(self.driver,"detectpaper_wordnum_less5w.jpg")
+            sleep(3)
+
+    def test_detectpaper_wordnum_among5to10W_run24(self):
+        '''检测大于5W字少于10W字的论文，验证扣除篇数是否为2'''
+        self.login()
+        me = ManualEntry(self.driver)
+        remainnum_befdetect = int(me.getRemainArticleNum())
+        me.clickMyTes()
+        me.manualEntryProcess()
+        me.inputPaperName("手工录入_5-10W")
+        me.inputAuthorName("海鸣威")
+        me.readAndInputContent("detect_file_among5-10w.txt")
+        me.clickBeginDetectBtn()
+        state = me.getDetectState()
+        try:
+            self.assertEqual(state,"开始检测","-----论文未开始检测-----")
+            finish = me.isCheckResultBtnExist()
+            self.assertTrue(finish,"-----论文检测未完成-----")
+            succeed = me.getDetectSimilarity()
+            self.assertIn('%',succeed,"-----论文检测未成功-----")
+            remainnum_aftdetect = int(me.getRemainArticleNum())
+            self.assertEqual(remainnum_befdetect-remainnum_aftdetect,int('2'),'-----扣除篇数错误，5w-10w字应扣除2篇-----')
+        finally:
+            imagetest = getResultImage()
+            imagetest.insert_image(self.driver,"detectpaper_wordnum_among5to10W.jpg")
+            sleep(3)
+
+    def test_detectpaper_wordnum_among10to15W_run24(self):
+        '''检测大于10W字少于15W字的论文，验证扣除篇数是否为3'''
+        self.login()
+        me = ManualEntry(self.driver)
+        remainnum_befdetect = int(me.getRemainArticleNum())
+        me.clickMyTes()
+        me.manualEntryProcess()
+        me.inputPaperName("手工录入_10-15W")
+        me.inputAuthorName("海鸣威")
+        me.readAndInputContent("detect_file_among10-15w.txt")
+        me.clickBeginDetectBtn()
+        state = me.getDetectState()
+        try:
+            self.assertEqual(state,"开始检测","-----论文未开始检测-----")
+            finish = me.isCheckResultBtnExist()
+            self.assertTrue(finish,"-----论文检测未完成-----")
+            succeed = me.getDetectSimilarity()
+            self.assertIn('%',succeed,"-----论文检测未成功-----")
+            remainnum_aftdetect = int(me.getRemainArticleNum())
+            self.assertEqual(remainnum_befdetect-remainnum_aftdetect,int('3'),'-----扣除篇数错误，10w-15w字应扣除3篇-----')
+        finally:
+            imagetest = getResultImage()
+            imagetest.insert_image(self.driver,"detectpaper_wordnum_among10to15W.jpg")
+            sleep(3)
+
+    def test_toCheckResult_run25(self):
+        '''检测成功后跳转至查看检测结果页面'''
+        self.login()
+        me = ManualEntry(self.driver)
+        me.clickMyTes()
+        task_name = me.manualEntryProcess()
+        me.inputPaperName("手工录入")
+        me.inputAuthorName("海鸣威")
+        me.readAndInputContent("detect_file.txt")
+        me.clickBeginDetectBtn()
+        state = me.getDetectState()
+        try:
+            self.assertEqual(state,"开始检测","-----论文未开始检测-----")
+            finish = me.isCheckResultBtnExist()
+            self.assertTrue(finish,"-----论文检测未完成-----")
+            succeed = me.getDetectSimilarity()
+            self.assertIn('%',succeed,"-----论文检测未成功-----")
+            me.clickCheckResultBtn()
+            vertify_name = me.getTaskName()
+            self.assertEqual(vertify_name,task_name,"-----未跳转至检测结果页-----")
+        finally:
+            imagetest = getResultImage()
+            imagetest.insert_image(self.driver,"toCheckResult.jpg")
+            sleep(3)
+
+    def test_toReCreat_run26(self):
+        '''检测成功后跳转至创建任务页面'''
+        self.login()
+        me = ManualEntry(self.driver)
+        me.clickMyTes()
+        me.manualEntryProcess()
+        me.inputPaperName("手工录入")
+        me.inputAuthorName("海鸣威")
+        me.readAndInputContent("detect_file.txt")
+        me.clickBeginDetectBtn()
+        state = me.getDetectState()
+        try:
+            self.assertEqual(state,"开始检测","-----论文未开始检测-----")
+            finish = me.isCheckResultBtnExist()
+            self.assertTrue(finish,"-----论文检测未完成-----")
+            succeed = me.getDetectSimilarity()
+            self.assertIn('%',succeed,"-----论文检测未成功-----")
+            me.clickReCreatBtn()
+            confirm_exist = me.isConfirmTaskBtnExist()
+            self.assertTrue(confirm_exist,"-----未跳转至新建任务或选择已有任务页面-----")
+        finally:
+            imagetest = getResultImage()
+            imagetest.insert_image(self.driver,"toReCreat.jpg")
+            sleep(3)
 
 
 if __name__=="__main__":
