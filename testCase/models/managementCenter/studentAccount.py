@@ -8,6 +8,7 @@
 from selenium import  webdriver
 import unittest
 from testCase.pageObj.basePage import BasePage
+from testCase.models.managementCenter.basePagestudentAccount import BasePage
 import time
 from time import sleep
 from selenium.webdriver.common.by import By
@@ -28,6 +29,8 @@ class StudentAccount(BasePage):
     newBatch_choose_loc=(By.ID,"newBatch")
     #新建批次名称
     newBatch_input_loc=(By.ID,"batchName")
+    #新建批次错误信息提示
+    newBatch_errorremind_loc=(By.ID,"newBatchErr")
     #有效期日期
     expirydate_button_loc=(By.XPATH,"html/body/div[4]/div[2]/div[2]/div[2]/span/img")
     #选择一个有效日期
@@ -59,6 +62,9 @@ class StudentAccount(BasePage):
     def choose_newBatch(self,batchName):
         self.find_element(*self.newBatch_input_loc).clear()
         self.find_element(*self.newBatch_input_loc).send_keys(batchName)
+
+    def newBatch_error_remind(self):
+        return self.find_element(*self.newBatch_errorremind_loc).text
 
     #选择有效期
     def expirydate(self):
@@ -99,9 +105,10 @@ class StudentAccount(BasePage):
 
     #调用autoit生成的exe，并传入浏览器、需要上传至页面文件的地址两个参数
     def uploadFile_para(self,browserName,filePath):
+        #注意路径中不能存在空格并且文件夹名称不能过长
         ab_path = GetPath().getAbsoluteFilePath("testvb.exe",r"uploadApp\testvb.exe")
         #os.system("./../testData/massProduceUploadApps/testvb.exe"+ " "+browserName+" "+filePath)
-        print(ab_path+ " "+browserName+" "+filePath)
+        #print(ab_path+ " "+browserName+" "+filePath)
         #print('''"%s" "%s" "%s"''' % (ab_path,browserName,filePath))
         #os.system('''"%s" "%s" "%s"'''% (ab_path,browserName,filePath))
         os.system(ab_path+ " "+browserName+" "+filePath)

@@ -110,10 +110,7 @@ class AccountManagement(BasePage):
     informationManage_title_loc=(By.XPATH,"html/body/div[4]/div[2]/div/span[2]/b")
 
 
-
-
     def in_accountManage(self):
-
         #鼠标悬停在账户管理上，然后单击子账户信息
         above=self.find_element(*self.manageCenter_button_loc)
         ActionChains(self.driver).move_to_element(above).perform()

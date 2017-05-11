@@ -330,7 +330,7 @@ class RunAccountManagement(myUnitChrome.UnitChrome):
         am.create_childAccount(childname="test111",password="123456",repassword="123456",displayname="万方数据",checkquanrity=count1)
         am.confirm_create_button()
         self.assertEqual(am.createAccount_error_remind(),"不能大于可分配篇数")
-        print("分配检测篇数不能超过可分配篇数测试成功")
+        print("分配篇数不能超过可分配篇数测试成功")
         #获取页面截图
         imagetest = getResultImage()
         imagetest.insert_image(self.driver,"checkquanrity_more.jpg")
