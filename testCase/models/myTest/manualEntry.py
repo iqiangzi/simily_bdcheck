@@ -14,7 +14,9 @@ from time import sleep,strftime
 
 
 class ManualEntry(BasePage):
-    #获取页面元素位置
+
+    #新建和选择任务相关******************************************************************************************
+
     myTestTab = (By.CSS_SELECTOR,'#myCheck>a')  #顶部导航栏-我的检测
     manualDetectButton = (By.CSS_SELECTOR,'.colleManualbtn')    #手工检测按钮
     creatTaskBox = (By.CSS_SELECTOR,'#taskNameNew')   #创建新任务输入框
@@ -32,6 +34,7 @@ class ManualEntry(BasePage):
     rechoiseBtn = (By.CSS_SELECTOR,'.collereTask>#reChoseOldTask') #重新选择任务按钮
 
     #检测内容相关***********************************************************************************************
+
     paperName = (By.CSS_SELECTOR,'.colleSerch>.colletaskName>#paperName') #检测内容-篇名
     authorName = (By.CSS_SELECTOR,'.colleSerch>.colletaskName>#authorName') #检测内容-作者
     authorCompany = (By.CSS_SELECTOR,'.colleSerch>.colletaskName>#authorCompany') #检测内容-作者单位
@@ -124,7 +127,8 @@ class ManualEntry(BasePage):
         return long_name
     #判断新建任务时的错误提示是否存在，如果存在返回flag=true，否则返回false
     def isCreatAlertExist(self):
-        super(ManualEntry, self).is_element_visible(self.creatTaskALert)
+        flag = super(ManualEntry, self).is_element_visible(self.creatTaskALert)
+        return flag
     #获取选择已有任务时的错误提示
     def getOldTaskAlert(self):
         return  self.find_element(*self.oldTaskAlert).text
@@ -165,7 +169,7 @@ class ManualEntry(BasePage):
         return  name
     #手工录入输入篇名
     def inputPaperName(self,papaername):
-        name = strftime("%Y-%m-%d %H_%M_%S")
+        name = strftime("%Y%m%d%H%M%S")
         self.find_element(*self.paperName).clear()
         self.find_element(*self.paperName).send_keys(papaername+"_"+name)
         sleep(1)
@@ -271,7 +275,7 @@ class ManualEntry(BasePage):
             elif fieldname == "tutor":
                 manu.inputTutor(con)
         sleep(2)
-    #判断是否有提示框
+    #判断是否有alert提示框
     def is_alert_exist(self):
         try:
             super(ManualEntry,self).confirm_broserAlert()

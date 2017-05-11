@@ -5,14 +5,13 @@
 # @Site    : 
 # @File    : run_manualEntry.py
 # @Software: PyCharm
-from selenium import  webdriver
+
 import unittest
 from time import sleep
 from testCase.models import myUnitFirefox
 from testCase.models.userVer.userVer import UserVer
 from testCase.models.myTest.manualEntry import ManualEntry
 from testResult.getResultImage import getResultImage
-
 
 class RunManualEntry(myUnitFirefox.UnitFirefox):
 
@@ -155,7 +154,7 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
         me.inputCreatTaskBox(task_name)
         me.clickConfirmTaskBtn()
         me.clickModifyBtn()
-        modify_name = task_name+'_2'
+        modify_name = me.getDifferName()
         me.inputCreatTaskBox(modify_name)
         me.clickConfirmTaskBtn()
         confirm_name = me.getCreatTaskName()
@@ -180,7 +179,7 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
         me.clickConfirmTaskBtn()
         same_name_alert = me.getCreatTaskALert()
         try:
-            self.assertEqual(same_name_alert,"您已创建过该任务；请重新创建或在已有任务中选择","-----任务名称重复未提示--------")
+            self.assertEqual(same_name_alert,"您已创建过该任务；请重新创建或在已有任务中选择","-----任务名称重复未提示-----")
         finally:
             imagetest = getResultImage()
             imagetest.insert_image(self.driver,"modifyCreatNewTask_samename.jpg")
@@ -200,7 +199,7 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
         me.clickConfirmTaskBtn()
         same_name_alert = me.getCreatTaskALert()
         try:
-            self.assertEqual(same_name_alert," --------任务名不能为空","任务名称为空未提示-----------")
+            self.assertEqual(same_name_alert,"任务名不能为空","-----任务名称为空未提示-----")
         finally:
             imagetest = getResultImage()
             imagetest.insert_image(self.driver,"modifyCreatNewTask_isnull.jpg")
@@ -219,12 +218,12 @@ class RunManualEntry(myUnitFirefox.UnitFirefox):
         me.clickConfirmTaskBtn()
         me.clickRechoiseBtn()
         try:
-            self.assertTrue(me.isRechoiseClickable())
+            self.assertTrue(me.isRechoiseClickable(),"-----重新选择不可点击------")
             me.clickDropDownBtn()
             rechoise_name = me.clickSecendOldTaskchoise()
             me.clickConfirmTaskBtn()
             confirm_name = me.getCreatTaskName()
-            self.assertEqual(rechoise_name,confirm_name,"--------重新选择已有任务失败----------")
+            self.assertEqual(rechoise_name,confirm_name,"-----重新选择已有任务失败-----")
         finally:
             imagetest = getResultImage()
             imagetest.insert_image(self.driver,"repeatSelectExistingTasks_succeed.jpg")
