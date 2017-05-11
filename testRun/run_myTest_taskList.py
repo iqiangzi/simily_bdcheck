@@ -249,8 +249,8 @@ class RunTaskList(myUnitChrome.UnitChrome):
         # 输入篇名 点击搜索
         T.title_search("200字")
         time.sleep(1)
-        # 勾选复选框
-        self.driver.find_element_by_id("allchecked").click()
+        # 勾选第一行的复选框
+        self.driver.find_element_by_id("html/body/div[4]/div[2]/table/tbody/tr[2]/td[2]/input").click()
         # 转移到第一个任务
         T.transferTask()
         task=T.taskName()
@@ -631,6 +631,7 @@ class RunTaskList(myUnitChrome.UnitChrome):
         imagetest = getResultImage()
         imagetest.insert_image(self.driver,"online_report_V1.0.jpg")
 
-
+if __name__=="__main__":
+    unittest.main()
 
 
