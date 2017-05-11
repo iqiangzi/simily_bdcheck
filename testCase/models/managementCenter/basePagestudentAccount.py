@@ -49,6 +49,13 @@ class BasePage(object):
     #跳到最外层窗口
     def user_switch_default(self):
         self.driver.switch_to.default_content()
+     #处理浏览器弹窗
+    def confirm_broserAlert(self):
+        alert = self.driver.switch_to_alert()
+        #print(alert.text)
+        text = alert.text
+        alert.accept()
+        return text
 
 class UserVer(BasePage):
     #登录各个元素定位
