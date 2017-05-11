@@ -8,14 +8,21 @@
 from selenium import  webdriver
 import unittest
 from HTMLTestRunner import HTMLTestRunner
+from selenium.webdriver.support.ui import Select
 import time
 from testCase.models import myUnitChrome
 from testCase.models import myUnitFirefox
 from testCase.models.userVer.userVer import UserVer
 from testCase.models.myTest.taskList import TaskList
 from testResult.getResultImage import getResultImage
+from selenium.webdriver.common.by import By
 
 class RunTaskList(myUnitChrome.UnitChrome):
+    # 第一行复选框
+    first_select_loc=(By.XPATH, "html/body/div[4]/div[2]/table/tbody/tr[2]/td[2]/input")
+    task_search_loc = (By.XPATH, ".//*[@id='searchTaskItemForm']/div[2]/p[2]/input")
+    # 篇名
+    title_input_loc=(By.XPATH, ".//*[@id='searchTaskItemForm']/div[2]/p[1]/input[1]")
     def user_login_verify_run(self,username,password):
         '''
         用户登录用例运行
@@ -199,44 +206,431 @@ class RunTaskList(myUnitChrome.UnitChrome):
         T=TaskList(self.driver)
         # 进入名称链接
         T.taskNameLink("ncy")
+        flag=T.downVerify()
+        if flag == True:
+            # 修改文件名称
+            T.renameFileName()
         # 勾选复选框，点击下载按钮
         T.downloadReport()
+        # 点击弹出框的“确定按钮”
+        self.driver.find_element_by_xpath(".//*[@id='confirmDownload']").click()
+        time.sleep(3)
+        flag1=T.downVerify()
+        # 判断下载位置
+        self.assertTrue(flag1)
+        imagetest = getResultImage()
+        imagetest.insert_image(self.driver,"report_down_success.jpg")
+
+    def test_list1D_run(self):
+        '''进入名称链接：下载报告-请选择检测信息'''
+        self.user_login_verify_run("collegecheck","f")
+        time.sleep(1)
+        T=TaskList(self.driver)
+        # 进入名称链接
+        T.taskNameLink("ncy")
+        # 点击下载按钮
+        self.driver.find_element_by_id("downLoadReport").click()
+        # 点击弹出框的“确定按钮”
+        self.driver.find_element_by_xpath(".//*[@id='confirmDownload']").click()
+        time.sleep(3)
+        msg=T.alert()
+        # "请选择检测信息。"
+        self.assertEqual(msg,"请选择检测信息。")
+        imagetest = getResultImage()
+        imagetest.insert_image(self.driver,"report_down_fail.jpg")
+
+    def test_list1E_run(self):
+        '''进入名称链接：转移到其他任务-转移成功'''
+        self.user_login_verify_run("collegecheck","f")
+        time.sleep(1)
+        T=TaskList(self.driver)
+        # 进入名称链接
+        T.taskNameLink("ncy")
+        # 输入篇名 点击搜索
+        T.title_search("200字")
+        time.sleep(1)
+        # 勾选复选框
+        self.driver.find_element_by_id("allchecked").click()
+        # 转移到第一个任务
+        T.transferTask()
+        task=T.taskName()
         time.sleep(2)
-        # 判断文件夹中是否为空
-        T.renameFileName()
+        # 验证转移
+        title=T.returnTask(task,"200字")
+        self.assertIn("200字",title)
+        imagetest = getResultImage()
+        imagetest.insert_image(self.driver,"transfer_task_success.jpg")
+
+    def test_list1F_run(self):
+        '''进入名称链接：转移到其他任务-请选择检测信息'''
+        self.user_login_verify_run("collegecheck","f")
+        time.sleep(1)
+        T=TaskList(self.driver)
+        # 进入名称链接
+        T.taskNameLink("ncy")
+        # 点击下拉框，选择第一个
+        T.transferTask()
+        msg=T.alert()
+        self.assertEqual(msg,"请选择检测信息。")
+        imagetest = getResultImage()
+        imagetest.insert_image(self.driver,"transfer_task_fail.jpg")
+
+    def test_list2A_run(self):
+        '''进入名称链接：标记为-问题论文'''
+        self.user_login_verify_run("collegecheck","f")
+        time.sleep(1)
+        T=TaskList(self.driver)
+        # 进入名称链接
+        T.taskNameLink("ncy")
+        # 勾选复选框
+        self.driver.find_element(*self.first_select_loc).click()
+        # 标记为问题论文
+        T.markProblem()
+        problem_num = T.paperNum()
+        self.assertEqual(problem_num,"1")
+        imagetest = getResultImage()
+        imagetest.insert_image(self.driver,"mark_paper_success.jpg")
+
+    def test_list2B_run(self):
+        '''进入名称链接：标记为-问题论文，请选择检测信息'''
+        self.user_login_verify_run("collegecheck","f")
+        time.sleep(1)
+        T=TaskList(self.driver)
+        # 进入名称链接
+        T.taskNameLink("ncy")
+        # 标记为问题论文
+        T.markProblem()
+        time.sleep(1)
+        msg=T.alert()
+        self.assertEqual(msg,"请选择检测信息。")
+        imagetest = getResultImage()
+        imagetest.insert_image(self.driver,"mark_paper_fail.jpg")
+    def test_list2C_run(self):
+        '''进入名称链接：取消标记为-问题论文'''
+        self.user_login_verify_run("collegecheck","f")
+        time.sleep(1)
+        T=TaskList(self.driver)
+        # 进入名称链接
+        T.taskNameLink("ncy")
+        # 勾选复选框
+        self.driver.find_element(*self.first_select_loc).click()
+        # 标记为问题论文
+        T.markProblem()
+        time.sleep(2)
+        # 勾选复选框
+        self.driver.find_element(*self.first_select_loc).click()
+        # 取消标记为问题论文
+        T.concelMark()
+        time.sleep(2)
+        problem_num = T.paperNum()
+        self.assertEqual(problem_num,"0")
+        imagetest = getResultImage()
+        imagetest.insert_image(self.driver,"unmark_paper_success.jpg")
+    def test_list2D_run(self):
+        '''进入名称链接：取消标记为-问题论文,提示请选择'''
+        self.user_login_verify_run("collegecheck","f")
+        time.sleep(1)
+        T=TaskList(self.driver)
+        # 进入名称链接
+        T.taskNameLink("ncy")
+        # 取消标记为问题论文
+        T.concelMark()
+        time.sleep(2)
+        msg=T.alert()
+        self.assertEqual(msg,"请选择检测信息。")
+        imagetest = getResultImage()
+        imagetest.insert_image(self.driver,"unmark_paper_fail.jpg")
+
+    def test_list3A_run(self):
+        '''进入名称链接：篇名链接-上传论文可以点击下载到本地'''
+        self.user_login_verify_run("collegecheck","f")
+        time.sleep(1)
+        T=TaskList(self.driver)
+        # 进入名称链接
+        T.taskNameLink("ncy")
+        # 输入篇名点击搜索
+        T.title_search("医学期刊")
+        new_title = T.paperNameLink()
+        # print(new_title)
+        flag=T.downVerify1(new_title)
+        if flag == True:
+            # 修改文件名称
+            T.renameFileName1(new_title)
+        # 勾选复选框，点击下载按钮
+        T.downloadReport()
         # 点击弹出框的“确定按钮”
         self.driver.find_element_by_xpath(".//*[@id='confirmDownload']").click()
         time.sleep(3)
         # 判断下载位置
-        self.assertTrue(T.downVerify())
+        flag1=T.downVerify1(new_title)
+        self.assertTrue(flag1)
         imagetest = getResultImage()
-        imagetest.insert_image(self.driver,"report_down_success.jpg")
+        imagetest.insert_image(self.driver,"click_name_link.jpg")
+
+    def test_list3B_run(self):
+        '''进入名称链接：作者链接-显示该作者的论文'''
+        self.user_login_verify_run("collegecheck","f")
+        time.sleep(1)
+        T=TaskList(self.driver)
+        # 进入名称链接
+        T.taskNameLink("ncy")
+        # 输入篇名点击搜索
+        T.title_search("医学")
+        flag = T.authorLink()
+        time.sleep(2)
+        self.assertTrue(flag)
+        imagetest = getResultImage()
+        imagetest.insert_image(self.driver,"click_author_link.jpg")
+
+    def test_list3C_run(self):
+        '''进入名称链接：检测时间排序'''
+        self.user_login_verify_run("collegecheck","f")
+        time.sleep(1)
+        T=TaskList(self.driver)
+        # 进入名称链接
+        T.taskNameLink("ncy")
+        # 点击检测时间
+        self.assertTrue(T.timeOrder())
+        imagetest = getResultImage()
+        imagetest.insert_image(self.driver,"time_order_success.jpg")
+    def test_list3D_run(self):
+        '''进入名称链接：V1.0相似比排序'''
+        self.user_login_verify_run("collegecheck","f")
+        time.sleep(1)
+        T=TaskList(self.driver)
+        # 进入名称链接
+        T.taskNameLink("new_V")
+        # 筛选检测成功的
+        Select(self.driver.find_element_by_name("State")).select_by_visible_text("检测成功")
+        self.driver.find_element(*self.task_search_loc).click()
+        time.sleep(2)
+        self.assertTrue(T.similarOrder())
+        imagetest = getResultImage()
+        imagetest.insert_image(self.driver,"similarRadio_order_success.jpg")
+
+    def test_list3E_run(self):
+        '''进入名称链接：V2.0相似比排序'''
+        self.user_login_verify_run("collegecheck","f")
+        time.sleep(1)
+        T=TaskList(self.driver)
+        # 进入名称链接
+        T.taskNameLink("new_V")
+        # 筛选检测成功的
+        Select(self.driver.find_element_by_name("State")).select_by_visible_text("检测成功")
+        self.driver.find_element(*self.task_search_loc).click()
+        time.sleep(2)
+        self.assertTrue(T.similarOrder1())
+        imagetest = getResultImage()
+        imagetest.insert_image(self.driver,"similarRadio_order_successV2.0.jpg")
+
+    def test_list4A_run(self):
+        '''进入名称链接：下载 V2.0简明报告'''
+        self.user_login_verify_run("collegecheck","f")
+        time.sleep(1)
+        T=TaskList(self.driver)
+        # 进入名称链接
+        T.taskNameLink("new_V")
+        # 输入篇名点击搜索
+        self.driver.find_element(*self.title_input_loc).send_keys("医学期刊简介")
+        # 筛选检测成功的
+        Select(self.driver.find_element_by_name("State")).select_by_visible_text("检测成功")
+        self.driver.find_element(*self.task_search_loc).click()
+        time.sleep(2)
+        # 1对应V2.0简明版
+        report_type = T.downReport("1")
+        str=report_type[:2]
+        str_new="论文相似性检测报告"+"（V2.0"+str+"版）.pdf"
+        title = T.loadReport1()
+        new_title = title+str_new
+        print(new_title)
+        # 判断文件夹中是否存在
+        flag=T.downVerify1(new_title)
+        if flag == True:
+            # 修改文件名称
+            T.renameFileName1(new_title)
+        # 点击链接
+        self.driver.find_element_by_xpath("html/body/div[4]/div[2]/table/tbody/tr[2]/td[9]/a[1]").click()
+        time.sleep(3)
+        # 判断下载位置
+        flag1=T.downVerify1(new_title)
+        self.assertTrue(flag1)
+        imagetest = getResultImage()
+        imagetest.insert_image(self.driver,"concise_report_V2.0.jpg")
+
+    def test_list4B_run(self):
+        '''进入名称链接：下载 V2.0详细报告'''
+        self.user_login_verify_run("collegecheck","f")
+        time.sleep(1)
+        T=TaskList(self.driver)
+        # 进入名称链接
+        T.taskNameLink("new_V")
+        # 输入篇名点击搜索
+        self.driver.find_element(*self.title_input_loc).send_keys("医学期刊简介")
+        # 筛选检测成功的
+        Select(self.driver.find_element_by_name("State")).select_by_visible_text("检测成功")
+        self.driver.find_element(*self.task_search_loc).click()
+        time.sleep(2)
+        # 2对应V2.0详细版
+        report_type = T.downReport("2")
+        str=report_type[:2]
+        str_new="论文相似性检测报告"+"（V2.0"+str+"版）.pdf"
+        title = T.loadReport1()
+        new_title = title+str_new
+        print(new_title)
+        # 判断文件夹中是否存在
+        flag=T.downVerify1(new_title)
+        if flag == True:
+            # 修改文件名称
+            T.renameFileName1(new_title)
+        # 点击链接
+        self.driver.find_element_by_xpath("html/body/div[4]/div[2]/table/tbody/tr[2]/td[9]/a[3]").click()
+        time.sleep(3)
+        # 判断下载位置
+        flag1=T.downVerify1(new_title)
+        self.assertTrue(flag1)
+        imagetest = getResultImage()
+        imagetest.insert_image(self.driver,"detail_report_V2.0.jpg")
+
+    def test_list4C_run(self):
+        '''进入名称链接：下载 V1.0简明报告'''
+        self.user_login_verify_run("collegecheck","f")
+        time.sleep(1)
+        T=TaskList(self.driver)
+        # 进入名称链接
+        T.taskNameLink("new_V")
+        # 输入篇名点击搜索
+        self.driver.find_element(*self.title_input_loc).send_keys("医学期刊简介")
+        # 筛选检测成功的
+        Select(self.driver.find_element_by_name("State")).select_by_visible_text("检测成功")
+        self.driver.find_element(*self.task_search_loc).click()
+        time.sleep(2)
+        # 1对应简明报告
+        report_type = T.downReport("1")
+        str=report_type[:2]
+        str_new="+论文相似性检测报告"+"（V1.0"+str+"版）.pdf"
+        title = T.loadReport()
+        new_title = title+str_new
+        print(new_title)
+        # 判断文件夹中是否存在
+        flag=T.downVerify1(new_title)
+        if flag == True:
+            # 修改文件名称
+            T.renameFileName1(new_title)
+        # 点击V1.0简明报告链接
+        self.driver.find_element_by_xpath("html/body/div[4]/div[2]/table/tbody/tr[2]/td[9]/a[2]").click()
+        time.sleep(3)
+        # 判断下载位置
+        flag1 = T.downVerify1(new_title)
+        self.assertTrue(flag1)
+        imagetest = getResultImage()
+        imagetest.insert_image(self.driver,"concise_report_V1.0.jpg")
+
+    def test_list4D_run(self):
+        '''进入名称链接：下载 V1.0详细报告'''
+        self.user_login_verify_run("collegecheck","f")
+        time.sleep(1)
+        T=TaskList(self.driver)
+        # 进入名称链接
+        T.taskNameLink("new_V")
+        # 输入篇名点击搜索
+        self.driver.find_element(*self.title_input_loc).send_keys("医学期刊简介")
+        # 筛选检测成功的
+        Select(self.driver.find_element_by_name("State")).select_by_visible_text("检测成功")
+        self.driver.find_element(*self.task_search_loc).click()
+        time.sleep(2)
+        # 2对应详细报告
+        report_type = T.downReport("2")
+        str=report_type[:2]
+        str_new="+论文相似性检测报告"+"（V1.0"+str+"版）.pdf"
+        title = T.loadReport()
+        new_title = title+str_new
+        print(new_title)
+        # 判断文件夹中是否存在
+        flag=T.downVerify1(new_title)
+        if flag == True:
+            # 修改文件名称
+            T.renameFileName1(new_title)
+        # 点击V1.0详细版链接
+        self.driver.find_element_by_xpath("html/body/div[4]/div[2]/table/tbody/tr[2]/td[9]/a[4]").click()
+        time.sleep(3)
+        # 判断下载位置
+        flag1 = T.downVerify1(new_title)
+        self.assertTrue(flag1)
+        imagetest = getResultImage()
+        imagetest.insert_image(self.driver,"detail_report_V1.0.jpg")
+
+    def test_list4E_run(self):
+        '''进入名称链接：下载 V1.0全文报告'''
+        self.user_login_verify_run("collegecheck","f")
+        time.sleep(1)
+        T=TaskList(self.driver)
+        # 进入名称链接
+        T.taskNameLink("new_V")
+        # 输入篇名点击搜索
+        self.driver.find_element(*self.title_input_loc).send_keys("医学期刊简介")
+        # 筛选检测成功的
+        Select(self.driver.find_element_by_name("State")).select_by_visible_text("检测成功")
+        self.driver.find_element(*self.task_search_loc).click()
+        time.sleep(2)
+        # 3对应全文报告
+        report_type = T.downReport("3")
+        str=report_type[:2]
+        str_new="+论文相似性检测报告"+"（V1.0"+str+"版）.pdf"
+        title = T.loadReport()
+        new_title = title+str_new
+        print(new_title)
+        # 判断文件夹中是否存在
+        flag=T.downVerify1(new_title)
+        if flag == True:
+            # 修改文件名称
+            T.renameFileName1(new_title)
+        # 点击V1.0详细版链接
+        self.driver.find_element_by_xpath("html/body/div[4]/div[2]/table/tbody/tr[2]/td[9]/a[5]").click()
+        time.sleep(3)
+        # 判断下载位置
+        flag1 = T.downVerify1(new_title)
+        self.assertTrue(flag1)
+        imagetest = getResultImage()
+        imagetest.insert_image(self.driver,"full_report_V1.0.jpg")
+
+    def test_list5A_run(self):
+        '''进入名称链接：查看 V2.0在线报告'''
+        self.user_login_verify_run("collegecheck","f")
+        time.sleep(1)
+        T=TaskList(self.driver)
+        # 进入名称链接
+        T.taskNameLink("new_V")
+        # 输入篇名点击搜索
+        self.driver.find_element(*self.title_input_loc).send_keys("医学期刊简介")
+        # 筛选检测成功的
+        Select(self.driver.find_element_by_name("State")).select_by_visible_text("检测成功")
+        self.driver.find_element(*self.task_search_loc).click()
+        time.sleep(1)
+        #self.driver.window_handles
+        flag = T.onlineReport(1)
+        self.assertTrue(flag)
+        imagetest = getResultImage()
+        imagetest.insert_image(self.driver,"online_report_V2.0.jpg")
+
+    def test_list5B_run(self):
+        '''进入名称链接：查看 V！.0在线报告'''
+        self.user_login_verify_run("collegecheck","f")
+        time.sleep(1)
+        T=TaskList(self.driver)
+        # 进入名称链接
+        T.taskNameLink("new_V")
+        # 输入篇名点击搜索
+        self.driver.find_element(*self.title_input_loc).send_keys("医学期刊简介")
+        # 筛选检测成功的
+        Select(self.driver.find_element_by_name("State")).select_by_visible_text("检测成功")
+        self.driver.find_element(*self.task_search_loc).click()
+        time.sleep(1)
+        #self.driver.window_handles
+        flag = T.onlineReport(2)
+        self.assertFalse(flag)
+        imagetest = getResultImage()
+        imagetest.insert_image(self.driver,"online_report_V1.0.jpg")
 
 
 
 
-
-    def test_operation_run(self):
-        pass
-    def test_taskNameLink_run(self):
-        pass
-    def test_taskLiskInfo_run(self):
-        pass
-    def test_paperquery_run(self):
-        pass
-    def test_downloadReport_run(self):
-        pass
-    def test_transferTask_run(self):
-        pass
-    def test_markForProblem_run(self):
-        pass
-    def test_cancelMarkPaper_run(self):
-        pass
-    def test_paperNameLink_run(self):
-        pass
-    def test_authorLink_run(self):
-        pass
-    def test_operation_run(self):
-        pass
-    def test_viewOnlineReports_run(self):
-        pass
