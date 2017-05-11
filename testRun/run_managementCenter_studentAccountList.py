@@ -81,7 +81,7 @@ class RunStudentAccount(myUnitChrome.UnitChrome):
         now_title="大学生论文检测-学生账户批次信息表.xls"
         flag = S.downVerify1(now_title)
         if flag == True:
-            S.renameFileName1(now_title)
+            S.renameFileName1(now_title,".xls")
         # 点击导出按钮
         self.driver.find_element_by_xpath(".//*[@id='exportForm']/button").click()
         time.sleep(3)
@@ -212,7 +212,7 @@ class RunStudentAccount(myUnitChrome.UnitChrome):
         now_title="大学生论文检测-lytest123账户信息表.xls"
         flag = S.downVerify1(now_title)
         if flag == True:
-            S.renameFileName1(now_title)
+            S.renameFileName1(now_title,".xls")
         # 单击导出按钮
         self.driver.find_element_by_xpath("html/body/div[4]/div[3]/form[2]/button").click()
         time.sleep(3)
@@ -418,7 +418,7 @@ class RunStudentAccount(myUnitChrome.UnitChrome):
         # print(new_title)
         flag = S.downVerify1(new_title)
         if flag == True:
-            S.renameFileName1(new_title)
+            S.renameFileName1(new_title,".pdf")
         # 点击名称链接进行下载论文
         self.driver.find_element_by_xpath(".//*[@id='container']/tbody/tr[%s]/td[1]/a" % row).click()
         time.sleep(3)
@@ -455,7 +455,7 @@ class RunStudentAccount(myUnitChrome.UnitChrome):
         print(new_title)
         flag = S.downVerify1(new_title)
         if flag == True:
-            S.renameFileName1(new_title)
+            S.renameFileName1(new_title,".pdf")
         # 点击版本链接 下载详细报告V2.0
         S.versionLink(6,1)
         time.sleep(3)
@@ -492,7 +492,7 @@ class RunStudentAccount(myUnitChrome.UnitChrome):
         print(new_title)
         flag = S.downVerify1(new_title)
         if flag == True:
-            S.renameFileName1(new_title)
+            S.renameFileName1(new_title,".pdf")
         # 点击版本链接 下载详细报告V1.0
         S.versionLink(6,2)
         time.sleep(3)
@@ -530,7 +530,7 @@ class RunStudentAccount(myUnitChrome.UnitChrome):
         print(new_title)
         flag = S.downVerify1(new_title)
         if flag == True:
-            S.renameFileName1(new_title)
+            S.renameFileName1(new_title, ".pdf")
         # 点击版本链接 下载全文报告V1.0
         S.versionLink(6,3)
         time.sleep(3)

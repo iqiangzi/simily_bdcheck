@@ -123,13 +123,13 @@ class StuAccountList(BasePage):
         return flag
 
     # 判断文件夹是否为空，不为空则重命名同名文件，以保证新下载的文件的唯一性。为空则直接下载
-    def renameFileName1(self,newTitle):
+    def renameFileName1(self,newTitle,suffix):
         ab_path = GetPath().getAbsoluteFilePath(newTitle,r"downloadFiles\%s" % newTitle)
         ab_path_rename = GetPath().getAbsoluteFilePath("%s" % newTitle,r"downloadFiles")
         #获取当前时间
         name=time.strftime("%Y-%m-%d %H_%M_%S")
         if os.path.exists(ab_path):
-            os.rename(ab_path,ab_path_rename+"\%s.xls"%(name))
+            os.rename(ab_path,ab_path_rename+"\%s%s"%(name,suffix))
             print("文件夹不为空")
         else:
             #pass
