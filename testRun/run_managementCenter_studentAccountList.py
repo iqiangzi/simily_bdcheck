@@ -352,6 +352,7 @@ class RunStudentAccount(myUnitChrome.UnitChrome):
         # 点击数量链接
         self.driver.find_element_by_xpath(".//*[@id='container']/table/tbody/tr[2]/td[4]/a/b").click()
         old_article = int(self.driver.find_element_by_xpath(".//*[@id='container']/tbody/tr[2]/td[10]").text)
+        time.sleep(1)
         # 增加第一行的篇数
         S.optionBtn("增加篇数","1")
         # 增加2篇
