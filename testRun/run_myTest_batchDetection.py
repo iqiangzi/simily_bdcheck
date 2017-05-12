@@ -19,7 +19,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
         userver=UserVer(self.driver)
         userver.userLogin("collegecheck","f")
 
-    def atest_creatNewTask_succeed_run01(self):
+    def test_creatNewTask_succeed_run01(self):
         '''新建任务成功'''
         self.login()
         me = BatchDetection(self.driver)
@@ -36,7 +36,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"creatNewTask_succeeful.jpg")
             sleep(3)
 
-    def atest_selectExistingTasks_succeed_run02(self):
+    def test_selectExistingTasks_succeed_run02(self):
         '''选择已有任务成功'''
         self.login()
         me = BatchDetection(self.driver)
@@ -55,7 +55,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"selectExistingTasks_succeed.jpg")
             sleep(3)
 
-    def atest_creatNewTask_sameName_run03(self):
+    def test_creatNewTask_sameName_run03(self):
         '''新建任务，任务名称重复'''
         self.login()
         me = BatchDetection(self.driver)
@@ -73,7 +73,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"creatNewTask_sameName.jpg")
             sleep(3)
 
-    def atest_creatNewTask_isnull_run04(self):
+    def test_creatNewTask_isnull_run04(self):
         '''新建任务，任务名称为空'''
         self.login()
         me = BatchDetection(self.driver)
@@ -89,7 +89,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"creatNewTask_isnull.jpg")
             sleep(3)
 
-    def atest_creatNewTask_overlong_run05(self):
+    def test_creatNewTask_overlong_run05(self):
         '''新建任务，任务名称过长'''
         self.login()
         me = BatchDetection(self.driver)
@@ -107,7 +107,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"creatNewTask_overlong.jpg")
             sleep(3)
 
-    def atest_selectExistingTasks_notExist_run06(self):
+    def test_selectExistingTasks_notExist_run06(self):
         '''输入的已有任务名称不存在'''
         self.login()
         me = BatchDetection(self.driver)
@@ -126,7 +126,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"selectExistingTasks_notExist.jpg")
             sleep(3)
 
-    def atest_selectExistingTasks_isnull_run07(self):
+    def test_selectExistingTasks_isnull_run07(self):
         '''不选择已有任务，直接点击'''
         self.login()
         me = BatchDetection(self.driver)
@@ -144,7 +144,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"selectExistingTasks_isnull.jpg")
             sleep(3)
 
-    def atest_modifyCreatNewTask_succeed_run08(self):
+    def test_modifyCreatNewTask_succeed_run08(self):
         '''新建任务后，对任务名称进行修改'''
         self.login()
         me = BatchDetection(self.driver)
@@ -165,7 +165,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"modifyCreatNewTask_succeed.jpg")
             sleep(3)
 
-    def atest_modifyCreatNewTask_samename_run09(self):
+    def test_modifyCreatNewTask_samename_run09(self):
         '''新建任务后，修改任务名称名称重复的提示验证'''
         self.login()
         me = BatchDetection(self.driver)
@@ -185,7 +185,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"modifyCreatNewTask_samename.jpg")
             sleep(3)
 
-    def atest_modifyCreatNewTask_isnull_run10(self):
+    def test_modifyCreatNewTask_isnull_run10(self):
         '''新建任务后，修改任务名称名为空的提示验证'''
         self.login()
         me = BatchDetection(self.driver)
@@ -205,7 +205,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"modifyCreatNewTask_isnull.jpg")
             sleep(3)
 
-    def atest_repeatSelectExistingTasks_succeed_run11(self):
+    def test_repeatSelectExistingTasks_succeed_run11(self):
         '''选择已有任务,重新选择后，验证是否成功'''
         self.login()
         bd = BatchDetection(self.driver)
@@ -229,7 +229,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"repeatSelectExistingTasks_succeed.jpg")
             sleep(3)
 
-    def atest_uploadfile_doc_detectsucceed_run12(self):
+    def test_uploadfile_doc_detectsucceed_run12(self):
         '''上传doc文件，点击开始检测按钮'''
         self.login()
         bd = BatchDetection(self.driver)
@@ -251,7 +251,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"uploadfile_doc_detectsucceed.jpg")
             sleep(3)
 
-    def atest_uploadfile_docx_detectsucceed_run13(self):
+    def test_uploadfile_docx_detectsucceed_run13(self):
         '''上传docx文件，点击开始检测按钮'''
         self.login()
         bd = BatchDetection(self.driver)
@@ -273,7 +273,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"uploadfile_docx_detectsucceed.jpg")
             sleep(3)
 
-    def atest_uploadfile_pdf_detectsucceed_run14(self):
+    def test_uploadfile_pdf_detectsucceed_run14(self):
         '''上传pdf文件，点击开始检测按钮'''
         self.login()
         bd = BatchDetection(self.driver)
@@ -295,7 +295,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"uploadfile_pdf_detectsucceed.jpg")
             sleep(3)
 
-    def atest_uploadfile_txt_detectsucceed_run15(self):
+    def test_uploadfile_txt_detectsucceed_run15(self):
         '''上传txt文件，点击开始检测按钮'''
         self.login()
         bd = BatchDetection(self.driver)
@@ -317,7 +317,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"uploadfile_txt_detectsucceed.jpg")
             sleep(3)
 
-    def atest_uploadfile_rtf_detectsucceed_run16(self):
+    def test_uploadfile_rtf_detectsucceed_run16(self):
         '''上传rtf文件，点击开始检测按钮'''
         self.login()
         bd = BatchDetection(self.driver)
@@ -339,7 +339,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"uploadfile_rtf_detectsucceed.jpg")
             sleep(3)
 
-    def atest_uploadfile_wrongtype_xls_run17(self):
+    def test_uploadfile_wrongtype_xls_run17(self):
         '''上传不符合上传文件类型的文件'''
         self.login()
         bd = BatchDetection(self.driver)
@@ -355,7 +355,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"uploadfile_wrongtype_xls.jpg")
             sleep(3)
 
-    def atest_uploadfile_oversize_run18(self):
+    def test_uploadfile_oversize_run18(self):
         '''上传超过30M的文件'''
         self.login()
         bd = BatchDetection(self.driver)
@@ -374,7 +374,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"uploadfile_oversize.jpg")
             sleep(3)
 
-    def atest_uploadfile_name1_run19(self):
+    def test_uploadfile_name1_run19(self):
         '''上传名称为a+b+c格式的文件，点击开始检测按钮，验证是否提取成功'''
         self.login()
         bd = BatchDetection(self.driver)
@@ -395,7 +395,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"uploadfile_name1.jpg")
             sleep(3)
 
-    def atest_uploadfile_name2_run20(self):
+    def test_uploadfile_name2_run20(self):
         '''上传名称为a+b格式的文件，点击开始检测按钮，验证是否提取成功'''
         self.login()
         bd = BatchDetection(self.driver)
@@ -416,7 +416,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"uploadfile_name2.jpg")
             sleep(3)
 
-    def atest_detectpaper_wordnum_less5w_run21(self):
+    def test_detectpaper_wordnum_less5w_run21(self):
         '''检测少于5W字的论文，验证扣除篇数是否为1'''
         self.login()
         bd = BatchDetection(self.driver)
@@ -441,7 +441,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"detectpaper_wordnum_less5w.jpg")
             sleep(3)
 
-    def atest_detectpaper_wordnum_among5to10W_run22(self):
+    def test_detectpaper_wordnum_among5to10W_run22(self):
         '''检测大于5W字少于10W字的论文，验证扣除篇数是否为2'''
         self.login()
         bd = BatchDetection(self.driver)
@@ -466,7 +466,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"detectpaper_wordnum_among5to10W.jpg")
             sleep(3)
 
-    def atest_detectpaper_wordnum_among10to15W_run23(self):
+    def test_detectpaper_wordnum_among10to15W_run23(self):
         '''检测大于10W字少于15W字的论文，验证扣除篇数是否为3'''
         self.login()
         bd = BatchDetection(self.driver)
@@ -491,7 +491,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"detectpaper_wordnum_among10to15W.jpg")
             sleep(3)
 
-    def atest_uploadfile_size0kb_run24(self):
+    def test_uploadfile_size0kb_run24(self):
         '''上传文件大小为0kb的文件'''
         self.login()
         bd = BatchDetection(self.driver)
@@ -507,7 +507,7 @@ class RunBatchDetection(myUnitFirefox.UnitFirefox):
             imagetest.insert_image(self.driver,"uploadfile_size0kb.jpg")
             sleep(3)
 
-    def atest_toCheckResult_run25(self):
+    def test_toCheckResult_run25(self):
         '''检测成功后跳转至查看检测结果页面'''
         self.login()
         bd = BatchDetection(self.driver)
