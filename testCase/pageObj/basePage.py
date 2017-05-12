@@ -58,7 +58,7 @@ class BasePage(object):
     #处理浏览器弹窗
     def confirm_broserAlert(self):
         alert = self.driver.switch_to_alert()
-        #print(alert.text)
+        print(alert.text)
         text = alert.text
         alert.accept()
         return text
@@ -114,7 +114,7 @@ class BasePage(object):
     def mouseHover(self,*loc):
         hover_element = self.find_element(*loc)
         ActionChains(self.driver).move_to_element(hover_element).perform()
-        sleep(2)
+        sleep(3)
 
 
 
