@@ -199,10 +199,8 @@ class TaskList(BasePage):
         sleep(1)
         task_name_in = self.find_element(*self.task_nameIn_loc).text
         return task_name,task_name_in
-    def operationLink(self,task_name):
+    def operationLink(self):
         try:
-            self.find_element(*self.task_name_loc).send_keys(task_name)
-            self.find_element(*self.search_button_loc).click()
             op_name = self.find_element(*self.op_display_loc).text
             # 进入链接
             self.find_element(*self.op_display_loc).click()
@@ -213,10 +211,9 @@ class TaskList(BasePage):
             elif op_name == "继续检测":
                 flag=self.is_element_visible(self.test_btn_loc)
                 return flag
-            elif op_name =="":
-                print("检测完成")
-        except Exception as msg:
-            print(msg)
+        except Exception:
+            flag = True
+            return flag
     def similarSearch(self, startR, endR, title, author):
         '''
         :param startR:相似比初始
@@ -234,10 +231,12 @@ class TaskList(BasePage):
         lineT=self.find_element(*self.firstL_title_loc).text
         lineA=self.find_element(*self.firstL_author_loc).text
         # string类型转化为 float类型
-        lineS=float(self.find_element(*self.firstL_similar_loc).text)
-        #return lineT,lineA,lineS
+        str = self.find_element(*self.firstL_similar_loc).text
+        str1 = str.split("|")
+        lineS=float(str1[0])
+        # print(lineS)
         if (title in lineT) and (author in lineA):
-            if (lineS >= startR) and (lineS <= endR):
+            if (lineS >= float(startR)) and (lineS <= float(endR)):
                 return  True
 
     def timeStatusSearch(self,month1,row1,column1,month2,row2,column2,status):
@@ -273,10 +272,12 @@ class TaskList(BasePage):
         Select(self.driver.find_element_by_name("State")).select_by_visible_text(status)# 点击查询按钮
         self.find_element(*self.task_search_loc).click()
         sleep(1)
-        # 定位第一行日期
+        # 定位第一行日期 html/body/div[4]/div[2]/table/tbody/tr[2]/td[6]
         date=self.driver.find_element_by_xpath("html/body/div[4]/div[2]/table/tbody/tr[2]/td[6]").text
         # 定位 状态 test_status_loc
-        result_status=self.find_element(*self.task_result_status).text
+        str=self.find_element(*self.task_result_status).text
+        status_str= str.split("｜")
+        result_status = status_str[0]
         # return date,status
         if result_status == status:
             return date
@@ -344,6 +345,7 @@ class TaskList(BasePage):
         # self.find_element(*self.first_select_loc).click()
         self.find_element(*self.mark_btn_loc).click()
         self.find_element(*self.mark_problem_btn).click()
+        time.sleep(1)
     # 取消标记为问题论文
     def concelMark(self):
         self.find_element(*self.mark_btn_loc).click()

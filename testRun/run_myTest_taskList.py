@@ -45,7 +45,7 @@ class RunTaskList(myUnitChrome.UnitChrome):
         self.user_login_verify_run("collegecheck","f")
         T=TaskList(self.driver)
         #开始日期和结束日期都为当前年的4-1
-        text=T.time_search("4","1","6","4","1","6")
+        text=T.time_search("4","1","6","1","1","6")
         self.assertIn("04-01",text)
         time.sleep(1)
         imagetest = getResultImage()
@@ -56,7 +56,7 @@ class RunTaskList(myUnitChrome.UnitChrome):
         T=TaskList(self.driver)
         self.driver.find_element_by_id("taskNameInput").send_keys("批量检测")
         #开始日期和结束日期都为当前年的4-1
-        text=T.time_search("4","1","6","4","1","6")
+        text=T.time_search("4","1","6","1","1","6")
         self.assertIn("04-01",text)
         time.sleep(1)
         imagetest = getResultImage()
@@ -106,8 +106,8 @@ class RunTaskList(myUnitChrome.UnitChrome):
         T=TaskList(self.driver)
         # 点击 末页按钮
         self.driver.find_element_by_xpath("html/body/div[4]/div[3]/form[2]/p/a[9]").click()
-        # 现在尾页是163
-        self.assertEqual(T.pageNum(),"163")
+        # 现在尾页是165
+        self.assertEqual(T.pageNum(),"165")
         time.sleep(1)
         imagetest = getResultImage()
         imagetest.insert_image(self.driver,"tasklist_last_btn.jpg")
@@ -170,7 +170,7 @@ class RunTaskList(myUnitChrome.UnitChrome):
         self.user_login_verify_run("collegecheck","f")
         time.sleep(1)
         T=TaskList(self.driver)
-        flag=T.operationLink("ncy")
+        flag=T.operationLink()
         self.assertTrue(flag)
         imagetest = getResultImage()
         imagetest.insert_image(self.driver,"task_op_link.jpg")
@@ -181,7 +181,8 @@ class RunTaskList(myUnitChrome.UnitChrome):
         T=TaskList(self.driver)
         # 进入名称链接
         T.taskNameLink("ncy")
-        flag = T.similarSearch(5,80,"Ch","医学")
+        # 相似比 篇名和作者查询
+        flag = T.similarSearch("5","80","Ch","医学")
         self.assertTrue(flag)
         time.sleep(1)
         imagetest = getResultImage()
@@ -195,7 +196,8 @@ class RunTaskList(myUnitChrome.UnitChrome):
         T.taskNameLink("ncy")
         # 选择时间 为今年的5月5日
         date=(T.timeStatusSearch(5,1,5,1,1,5,"检测成功"))
-        self.assertIn("05-05",date)
+        # print(date)
+        self.assertIn("05-05", date)
         time.sleep(1)
         imagetest = getResultImage()
         imagetest.insert_image(self.driver,"search_timeStatus_result.jpg")
@@ -249,8 +251,8 @@ class RunTaskList(myUnitChrome.UnitChrome):
         # 输入篇名 点击搜索
         T.title_search("200字")
         time.sleep(1)
-        # 勾选复选框
-        self.driver.find_element_by_id("allchecked").click()
+        # 勾选第一行的复选框
+        self.driver.find_element_by_xpath("html/body/div[4]/div[2]/table/tbody/tr[2]/td[2]/input").click()
         # 转移到第一个任务
         T.transferTask()
         task=T.taskName()
@@ -631,6 +633,7 @@ class RunTaskList(myUnitChrome.UnitChrome):
         imagetest = getResultImage()
         imagetest.insert_image(self.driver,"online_report_V1.0.jpg")
 
-
+if __name__=="__main__":
+    unittest.main()
 
 
