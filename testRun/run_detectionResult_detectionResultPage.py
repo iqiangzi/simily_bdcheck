@@ -95,35 +95,6 @@ class RunDetectionResultPage(myUnitChrome.UnitChrome):
         imagetest=getResultImage()
         imagetest.insert_image(self.driver,"queryRatioOnlyEnd.jpg")
 
-    def test_queryRatioBeginNegative_run(self):
-        '''输入相似比-左边界值为负数进行检测'''
-
-
-
-
-    def test_queryRatioEndNegative_run(self):
-        '''输入相似比-右边界值为负数进行检测'''
-
-
-
-
-    def test_queryRatioBeginNegative_run(self):
-        '''输入相似比-左边界值大于100，进行检测'''
-
-
-
-
-    def test_queryRatioEndNegative_run(self):
-        '''输入相似比-右边界值大于100，进行检测'''
-
-
-
-
-    def test_queryRatioEndNegative_run(self):
-        '''输入相似比-有边界值大于左边界值，进行检测'''
-
-
-
     def test_query_FileTitle_run(self):
         '''输入数据库存在的篇名，进行检索'''
         #登录系统
@@ -272,10 +243,136 @@ class RunDetectionResultPage(myUnitChrome.UnitChrome):
         imagetest=getResultImage()
         imagetest.insert_image(self.driver,"query_fullAuthor.jpg")
 
+    def test_queryTime1_run(self):
+        '''选择创建开始时间和结束时间，进行检索'''
+        # 登录本科生系统
+        self.loginBegin()
 
+        dr=DetectionResultPage(self.driver)
+        dr.queryBeginTime(2016,5,8)
+        sleep(5)
+        dr.queryEndTime(2017,12,29)
+        sleep(5)
+        dr.queryButtonClick()
+        print("测试用例执行完成：选择创建开始时间和结束时间，进行检索。")
 
+        # 对当前页面截图
+        imagetest=getResultImage()
+        imagetest.insert_image(self.driver,"queryTime11.jpg")
 
+    def test_queryTimeOnlyBegin_run(self):
+        '''只选择创建开始时间，不选择结束时间，进行检索'''
+        # 登录本科生系统
+        self.loginBegin()
 
+        dr=DetectionResultPage(self.driver)
+        dr.queryBeginTime(2016,5,11)
+        sleep(2)
+        dr.queryButtonClick()
+        print("测试用例执行完成：只选择创建开始时间，不选择结束时间，进行检索。")
+
+        # 对当前页面截图
+        imagetest=getResultImage()
+        imagetest.insert_image(self.driver,"queryTimeOnlyBegin1.jpg")
+
+    def test_queryTimeOnlyEnd_run(self):
+        '''只选择创建结束时间，不选择开始时间，进行检索'''
+        # 登录本科生系统
+        self.loginBegin()
+
+        dr=DetectionResultPage(self.driver)
+        dr.queryEndTime(2017,12,25)
+        sleep(2)
+        dr.queryButtonClick()
+        print("测试用例执行完成：只选择创建结束时间，不选择开始时间，进行检索。")
+
+        # 对当前页面截图
+        imagetest=getResultImage()
+        imagetest.insert_image(self.driver,"queryTimeOnlyEnd1.jpg")
+
+    def test_queryTaskNameSelectLi1_run(self):
+        '''选择检索条件 -- 任务名称 -- 下拉选择框 第一个元素'''
+        # 登录本科生系统
+        self.loginBegin()
+
+        dr=DetectionResultPage(self.driver)
+        dr.taskNameSelectLi1()
+        sleep(2)
+
+        dr.queryButtonClick()
+        sleep(2)
+        print("测试用例执行完成：选择检索条件 -- 任务名称 -- 下拉选择框 第一个元素,查询。")
+
+        # 对当前页面截图
+        imagetest=getResultImage()
+        imagetest.insert_image(self.driver,"queryTaskNameSelectLi1.jpg")
+
+    def test_queryTaskNameSelectLi2_run(self):
+        '''选择检索条件 -- 任务名称 -- 下拉选择框 第二个元素'''
+        # 登录本科生系统
+        self.loginBegin()
+
+        dr=DetectionResultPage(self.driver)
+        dr.taskNameSelectLi2()
+        sleep(2)
+
+        dr.queryButtonClick()
+        sleep(2)
+        print("测试用例执行完成：选择检索条件 -- 任务名称 -- 下拉选择框 第二个元素,查询。")
+
+        # 对当前页面截图
+        imagetest=getResultImage()
+        imagetest.insert_image(self.driver,"queryTaskNameSelectLi2.jpg")
+
+    def test_clickIsTroubleFile_run(self):
+        '''勾选问题论文，进行查询'''
+        # 登录本科生系统
+        self.loginBegin()
+
+        dr=DetectionResultPage(self.driver)
+        dr.clickIsTroubleFile()
+        sleep(2)
+
+        dr.queryButtonClick()
+        sleep(2)
+        print("测试用例执行完成：勾选问题论文，进行查询。")
+
+        # 对当前页面截图
+        imagetest=getResultImage()
+        imagetest.insert_image(self.driver,"clickIsTroubleFile.jpg")
+
+    def test_queryResultUseAll_run(self):
+        '''使用所有的检测条件，进行多条件检索'''
+        # 登录本科生系统
+        self.loginBegin()
+
+        dr=DetectionResultPage(self.driver)
+        # 输入相似比
+        dr.inputRatioBegin(10)
+        dr.inputRatioEnd(70)
+        # 输入篇名
+        dr.inputFileTitle("相似性检测本科生论文")
+        # 输入作者
+        dr.inputAuthor("李硕")
+        # 选择检测时间
+        dr.queryBeginTime(2017,5,10)
+        dr.queryEndTime(2017,5,17)
+        # 选择任务名称
+        dr.taskNameSelectLi1()
+        sleep(2)
+
+        dr.queryButtonClick()
+        sleep(2)
+        title=dr.resultListFileTitle1()
+        print(title)
+        self.assertEqual(title,"相似性检测本科生论文")
+        author=dr.resultListAuthor()
+        self.assertEqual(author,"李硕")
+        print("测试用例执行完成：使用所有的检测条件，进行多条件检索。")
+
+        # 对当前页面截图
+        imagetest=getResultImage()
+        imagetest.insert_image(self.driver,"queryResultUseAll.jpg")
 
     def test_pageSum_run(self):
         '''刚进入检索结果页面后，返回记录总条数'''
