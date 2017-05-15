@@ -51,7 +51,7 @@ class RunInformationManagement(myUnitChrome.UnitChrome):
         imagetest.insert_image(self.driver,"pageMsg.jpg")
 
     def test_queryDirect_run(self):
-        '''进入信息管理页面后，不输入查询条件，直接查询'''
+        '''进入信息管理页面后，不输入查询条件，直接点击查询按钮'''
         # 登录本科生系统
         login=UserVer(self.driver)
         login.userLogin("collegecheck","f")
@@ -59,7 +59,7 @@ class RunInformationManagement(myUnitChrome.UnitChrome):
         im=InformationManagement(self.driver)
         im.queryButtonClick()
         sleep(2)
-        print("测试用例执行完成：不输入查询条件，直接查询。")
+        print("测试用例执行完成：进入信息管理页面后，不输入查询条件，直接点击查询按钮。")
 
         # 对当前页面截图
         imagetest=getResultImage()
@@ -132,6 +132,7 @@ class RunInformationManagement(myUnitChrome.UnitChrome):
         im.queryButtonClick()
         sleep(10)
         queryResult=im.queryIsNull()
+        print(queryResult)
         self.assertEqual(queryResult,"没有找到您要搜索的任务。")
         print("测试用例执行完成：输入数据库不存在的任务名称，进行检索。")
 
@@ -206,7 +207,7 @@ class RunInformationManagement(myUnitChrome.UnitChrome):
         im.queryEndTime(2017,12,25)
         sleep(5)
         im.queryButtonClick()
-        print("测试用例执行完成：1111选择创建开始时间和结束时间，进行检索。")
+        print("测试用例执行完成：选择创建开始时间和结束时间，进行检索。")
 
         # 对当前页面截图
         imagetest=getResultImage()
