@@ -388,6 +388,193 @@ class RunDetectionResultPage(myUnitChrome.UnitChrome):
         imagetest=getResultImage()
         imagetest.insert_image(self.driver,"pageSum.jpg")
 
+    def test_downloadSimpleReport1_run(self):
+        '''下载简明报告1.0'''
+        # 登录本科生系统
+        self.loginBegin()
+        # 输入篇名
+
+        dr=DetectionResultPage(self.driver)
+        dr.inputFileTitle("相似性检测本科生论文")
+        # 选择检测时间
+        dr.queryBeginTime(2016,4,13)
+        dr.queryEndTime(2017,5,31)
+        dr.queryButtonClick()
+        sleep(2)
+        title=dr.resultListFileTitle1()
+        print(title)
+        self.assertEqual(title,"相似性检测本科生论文")
+
+
+
+
+
+    def test_download_run(self):
+        '''下载简明报告1.0'''
+        # 登录本科生系统
+        self.loginBegin()
+
+        dr=DetectionResultPage(self.driver)
+        # 输入篇名
+        dr.inputFileTitle("相似性检测本科生论文")
+        dr.queryButtonClick()
+        sleep(2)
+        title=dr.resultListFileTitle1()
+        print(title)
+        self.assertEqual(title,"相似性检测本科生论文")
+        '''
+
+        flag=dr.downVerify1(new_title)
+        if flag == True:
+            # 修改文件名称
+            dr.renameFileName1(new_title)
+        # 勾选复选框，点击下载按钮
+        dr.downloadReport()
+        # 点击弹出框的“确定按钮”
+        self.driver.find_element_by_xpath(".//*[@id='confirmDownload']").click()
+        time.sleep(3)
+        # 判断下载位置
+        flag1=dr.downVerify1(new_title)
+        self.assertTrue(flag1)
+        imagetest = getResultImage()
+        imagetest.insert_image(self.driver,"click_name_link.jpg")
+        '''
+
+    def test_pagingButtonSelect10_run(self):
+        '''点击每页显示页数按钮，选择每页显示10条'''
+        # 登录本科生系统
+        self.loginBegin()
+
+        dr=DetectionResultPage(self.driver)
+        dr.pagingButtonSelect10()
+        sleep(8)
+        result=dr.pagingSelect10Result()
+        self.assertEqual(result,"10")
+        print("测试用例执行完成：选择每页显示10条。")
+
+        # 对当前页面截图
+        imagetest=getResultImage()
+        imagetest.insert_image(self.driver,"pagingButtonSelect10.jpg")
+
+    def test_pagingButtonSelect20_run(self):
+        '''点击每页显示页数按钮，选择每页显示20条'''
+        # 登录本科生系统
+        self.loginBegin()
+
+        dr=DetectionResultPage(self.driver)
+        dr.pagingButtonSelect20()
+        sleep(8)
+        result=dr.pagingSelect20Result()
+        self.assertEqual(result,"20")
+        print("测试用例执行完成：选择每页显示20条。")
+
+        # 对当前页面截图
+        imagetest=getResultImage()
+        imagetest.insert_image(self.driver,"pagingButtonSelect20.jpg")
+
+    def test_pagingButtonSelect50_run(self):
+        '''点击每页显示页数按钮，选择每页显示50条'''
+        # 登录本科生系统
+        self.loginBegin()
+
+        dr=DetectionResultPage(self.driver)
+        dr.pagingButtonSelect50()
+        sleep(8)
+        result=dr.pagingSelect50Result()
+        self.assertEqual(result,"50")
+        print("测试用例执行完成：选择每页显示50条。")
+
+        # 对当前页面截图
+        imagetest=getResultImage()
+        imagetest.insert_image(self.driver,"pagingButtonSelect50.jpg")
+
+    def test_nextPage_run(self):
+        '''点击下一页按钮,跳转到下一页'''
+        # 登录本科生系统
+        self.loginBegin()
+
+        dr=DetectionResultPage(self.driver)
+        # 位于首页时，点击下一页按钮，进入第二页
+        dr.clickNextPage()
+        sleep(2)
+        result=dr.returnNowPageNum()
+        print(result)
+        self.assertEqual(result,"20")
+        # 点击下一页按钮，进入第三页
+        dr.clickNextPage1()
+        sleep(2)
+        result=dr.returnNowPageNum()
+        print(result)
+        self.assertEqual(result,"30")
+        print("测试用例执行完成：点击下一页按钮,跳转到下一页。")
+
+        # 对当前页面截图
+        imagetest=getResultImage()
+        imagetest.insert_image(self.driver,"nextPage.jpg")
+
+    def test_lastPage_run(self):
+        '''位于首页时，点击尾页按钮'''
+        # 登录本科生系统
+        self.loginBegin()
+
+        dr=DetectionResultPage(self.driver)
+        # 位于首页时，点击尾页按钮
+        dr.clickLastPage()
+        sleep(2)
+        result=dr.returnFirstPage()
+        print(result)
+        self.assertEqual(result,"首页")
+        print("测试用例执行完成：位于首页时，点击尾页按钮。")
+
+        # 对当前页面截图
+        imagetest=getResultImage()
+        imagetest.insert_image(self.driver,"lastPage.jpg")
+
+    def test_previousPage_run(self):
+        '''位于首页时，点击下一页按钮，进入第二页，然后点击上一页按钮，测试上一页按钮'''
+        # 登录本科生系统
+        self.loginBegin()
+
+        dr=DetectionResultPage(self.driver)
+        # 位于首页时，点击下一页按钮
+        dr.clickNextPage()
+        sleep(2)
+        # 位于尾页，点击上一页按钮
+        dr.clickPreviousPage()
+        sleep(2)
+        print("测试用例执行完成：位于尾页时，点击上一页按钮。")
+
+        # 对当前页面截图
+        imagetest=getResultImage()
+        imagetest.insert_image(self.driver,"previousPage.jpg")
+
+    def test_firstPage_run(self):
+        '''位于尾页时，点击首页按钮'''
+        # 登录本科生系统
+        self.loginBegin()
+
+        dr=DetectionResultPage(self.driver)
+        # 位于首页时，点击尾页按钮
+        dr.clickLastPage()
+        sleep(2)
+        result=dr.returnFirstPage()
+        print(result)
+        self.assertEqual(result,"首页")
+        # 位于尾页，点击首页按钮
+        dr.clickFirstPage()
+        sleep(2)
+        result=dr.returnLastPage()
+        print(result)
+        self.assertEqual(result,'末页')
+        print("测试用例执行完成：位于尾页时，点击首页按钮。")
+
+        # 对当前页面截图
+        imagetest=getResultImage()
+        imagetest.insert_image(self.driver,"firstPage.jpg")
+
+
+if __name__=="__main__":
+    unittest.main()
 
 
 
