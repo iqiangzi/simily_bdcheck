@@ -388,6 +388,36 @@ class RunDetectionResultPage(myUnitChrome.UnitChrome):
         imagetest=getResultImage()
         imagetest.insert_image(self.driver,"pageSum.jpg")
 
+    def test_downloadCheckFile_run(self):
+        '''点击检索到的第一条记录的篇名，下载检测文章'''
+        # 登录本科生系统
+        self.loginBegin()
+        # 输入篇名
+
+        dr=DetectionResultPage(self.driver)
+        dr.inputFileTitle("相似性检测本科生论文")
+        # 选择检测时间
+        dr.queryBeginTime(2016,4,13)
+        dr.queryEndTime(2017,5,31)
+        dr.queryButtonClick()
+        sleep(2)
+        title=dr.resultListFileTitle1()
+        print(title)
+        self.assertEqual(title,"相似性检测本科生论文")
+
+        flag=dr.verifyExist1()
+        if flag is True:
+            dr.renameFileName()
+            dr.clickFileTitle1()
+            sleep(5)
+            print("原文已存在，下载成功!")
+        else:
+            #单击导出按钮
+            dr.clickFileTitle1()
+            sleep(5)
+            print("原文下载成功")
+        print("测试用例执行完成：点击检索到的第一条记录的篇名，下载检测文章。")
+
     def test_downloadSimpleReport1_run(self):
         '''下载简明报告1.0'''
         # 登录本科生系统
@@ -405,40 +435,138 @@ class RunDetectionResultPage(myUnitChrome.UnitChrome):
         print(title)
         self.assertEqual(title,"相似性检测本科生论文")
 
+        flag=dr.verifyExist1()
+        if flag is True:
+            dr.renameFileName()
+            dr.clickSimpleReport1()
+            sleep(5)
+            print("原文已存在，下载成功!")
+        else:
+            #单击导出按钮
+            dr.clickSimpleReport1()
+            sleep(5)
+            print("原文下载成功")
+        print("测试用例执行完成：下载简明报告1.0。")
 
-
-
-
-    def test_download_run(self):
-        '''下载简明报告1.0'''
+    def test_downloadSimpleReport2_run(self):
+        '''下载简明报告2.0'''
         # 登录本科生系统
         self.loginBegin()
+        # 输入篇名
 
         dr=DetectionResultPage(self.driver)
-        # 输入篇名
         dr.inputFileTitle("相似性检测本科生论文")
+        # 选择检测时间
+        dr.queryBeginTime(2016,4,13)
+        dr.queryEndTime(2017,5,31)
         dr.queryButtonClick()
         sleep(2)
         title=dr.resultListFileTitle1()
         print(title)
         self.assertEqual(title,"相似性检测本科生论文")
-        '''
 
-        flag=dr.downVerify1(new_title)
-        if flag == True:
-            # 修改文件名称
-            dr.renameFileName1(new_title)
-        # 勾选复选框，点击下载按钮
-        dr.downloadReport()
-        # 点击弹出框的“确定按钮”
-        self.driver.find_element_by_xpath(".//*[@id='confirmDownload']").click()
-        time.sleep(3)
-        # 判断下载位置
-        flag1=dr.downVerify1(new_title)
-        self.assertTrue(flag1)
-        imagetest = getResultImage()
-        imagetest.insert_image(self.driver,"click_name_link.jpg")
-        '''
+        flag=dr.verifyExist1()
+        if flag is True:
+            dr.renameFileName()
+            dr.clickSimpleReport2()
+            sleep(5)
+            print("原文已存在，下载成功!")
+        else:
+            #单击导出按钮
+            dr.clickSimpleReport2()
+            sleep(5)
+            print("原文下载成功")
+        print("测试用例执行完成：下载简明报告2.0。")
+
+    def test_downloadDetailReport1_run(self):
+        '''下载详细报告1.0'''
+        # 登录本科生系统
+        self.loginBegin()
+        # 输入篇名
+
+        dr=DetectionResultPage(self.driver)
+        dr.inputFileTitle("相似性检测本科生论文")
+        # 选择检测时间
+        dr.queryBeginTime(2016,4,13)
+        dr.queryEndTime(2017,5,31)
+        dr.queryButtonClick()
+        sleep(2)
+        title=dr.resultListFileTitle1()
+        print(title)
+        self.assertEqual(title,"相似性检测本科生论文")
+
+        flag=dr.verifyExist1()
+        if flag is True:
+            dr.renameFileName()
+            dr.clickDetailReport1()
+            sleep(5)
+            print("原文已存在，下载成功!")
+        else:
+            #单击导出按钮
+            dr.clickDetailReport1()
+            sleep(5)
+            print("原文下载成功")
+        print("测试用例执行完成：下载详细报告1.0。")
+
+    def test_downloadDetailReport2_run(self):
+        '''下载详细报告2.0'''
+        # 登录本科生系统
+        self.loginBegin()
+        # 输入篇名
+
+        dr=DetectionResultPage(self.driver)
+        dr.inputFileTitle("相似性检测本科生论文")
+        # 选择检测时间
+        dr.queryBeginTime(2016,4,13)
+        dr.queryEndTime(2017,5,31)
+        dr.queryButtonClick()
+        sleep(2)
+        title=dr.resultListFileTitle1()
+        print(title)
+        self.assertEqual(title,"相似性检测本科生论文")
+
+        flag=dr.verifyExist1()
+        if flag is True:
+            dr.renameFileName()
+            dr.clickDetailReport2()
+            sleep(5)
+            print("原文已存在，下载成功!")
+        else:
+            #单击导出按钮
+            dr.clickDetailReport2()
+            sleep(5)
+            print("原文下载成功")
+        print("测试用例执行完成：下载详细报告2.0。")
+
+    def test_downloadFullReport1_run(self):
+        '''下载全文报告1.0'''
+        # 登录本科生系统
+        self.loginBegin()
+        # 输入篇名
+
+        dr=DetectionResultPage(self.driver)
+        dr.inputFileTitle("相似性检测本科生论文")
+        # 选择检测时间
+        dr.queryBeginTime(2016,4,13)
+        dr.queryEndTime(2017,5,31)
+        dr.queryButtonClick()
+        sleep(2)
+        title=dr.resultListFileTitle1()
+        print(title)
+        self.assertEqual(title,"相似性检测本科生论文")
+
+        flag=dr.verifyExist1()
+        if flag is True:
+            dr.renameFileName()
+            dr.clickFullReport1()
+            sleep(5)
+            print("原文已存在，下载成功!")
+        else:
+            #单击导出按钮
+            dr.clickFullReport1()
+            sleep(5)
+            print("原文下载成功")
+        print("测试用例执行完成：下载全文报告1.0。")
 
     def test_pagingButtonSelect10_run(self):
         '''点击每页显示页数按钮，选择每页显示10条'''
