@@ -88,6 +88,14 @@ class DetectionResultPage(BasePage):
 
     # 定位 简明报告1.0
     simpleReport1_loc=(By.XPATH,"html/body/div[4]/div[2]/table/tbody/tr[2]/td[8]/a[2]")
+    # 定位 简明报告2.0
+    simpleReport2_loc=(By.XPATH,"html/body/div[4]/div[2]/table/tbody/tr[2]/td[8]/a[1]")
+    # 定位 详细报告1.0
+    detailReport1_loc=(By.XPATH,"html/body/div[4]/div[2]/table/tbody/tr[2]/td[8]/a[4]")
+    # 定位 详细报告2.0
+    detailReport2_loc=(By.XPATH,"html/body/div[4]/div[2]/table/tbody/tr[2]/td[8]/a[3]")
+    # 定位 全文报告1.0
+    fullReport1_loc=(By.XPATH,"html/body/div[4]/div[2]/table/tbody/tr[2]/td[8]/a[5]")
 
 
 
@@ -95,7 +103,25 @@ class DetectionResultPage(BasePage):
         '''简明报告1.0，进行下载'''
         self.find_element(*self.simpleReport1_loc).click()
 
+    def clickSimpleReport2(self):
+        '''简明报告2.0，进行下载'''
+        self.find_element(*self.simpleReport2_loc).click()
 
+    def clickDetailReport1(self):
+        '''详细报告1.0，进行下载'''
+        self.find_element(*self.detailReport1_loc).click()
+
+    def clickDetailReport2(self):
+        '''详细报告2.0，进行下载'''
+        self.find_element(*self.detailReport2_loc).click()
+
+    def clickFullReport1(self):
+        '''全文报告1.0，进行下载'''
+        self.find_element(*self.fullReport1_loc).click()
+
+    def clickFileTitle1(self):
+        '''点击检索到的第一条记录的篇名，下载检测文章'''
+        self.find_element(*self.resultList_fileTitle1_loc).click()
 
     def clickNextPage(self):
         '''在首页时，点击下一页按钮'''
@@ -199,9 +225,6 @@ class DetectionResultPage(BasePage):
         author=self.find_element(*self.resultList_author_loc).text
         return author
 
-
-
-
     def queryBeginTime(self,year1,month1,day1):
         '''
         选择开始时间查询
@@ -250,24 +273,22 @@ class DetectionResultPage(BasePage):
         self.driver.find_element_by_link_text("%r" %day2).click()
         sleep(2)
 
+    #判断文件夹是否为空，不为空则重命名同名文件，以保证新下载的文件的唯一性。为空则直接下载
+    def renameFileName(self):
+        name=time.strftime("%Y-%m-%d %H_%M_%S")
+        dir_path=GetPath().getAbsoluteDirPath("downloadFiles")
+        if os.listdir(dir_path):
+            #text=self.paperName()
+            os.rename(dir_path+"/李硕.doc",dir_path+r"\%s.doc"%(name))
+        else:
+            pass
 
-    # 判断目录中是否存在同名文件 有的话返回True
-    def downVerify1(self,newTitle):
-        ab_path = GetPath().getAbsoluteFilePath(newTitle,r"downloadFiles\%s" % newTitle)
-        flag = os.path.exists(ab_path)
+    def verifyExist1(self):
+        #判断是否下载到本地,返回bool类型的True或False
+        #判断文件是否存在
+        dir_path=GetPath().getAbsoluteDirPath("downloadFiles")
+        flag = os.path.exists(dir_path+"\李硕.doc")
         return flag
 
-    # 判断文件夹是否为空，不为空则重命名同名文件，以保证新下载的文件的唯一性。为空则直接下载
-    def renameFileName1(self,newTitle):
-        ab_path = GetPath().getAbsoluteFilePath(newTitle,r"downloadFiles\%s" % newTitle)
-        ab_path_rename = GetPath().getAbsoluteFilePath("%s" % newTitle,r"downloadFiles")
-        #获取当前时间
-        name=time.strftime("%Y-%m-%d %H_%M_%S")
-        if os.path.exists(ab_path):
-            os.rename(ab_path,ab_path_rename+"\%s.pdf"%(name))
-            print("文件夹不为空")
-        else:
-            #pass
-            print("文件夹为空")
 
 
