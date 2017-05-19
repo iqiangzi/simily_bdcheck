@@ -84,11 +84,17 @@ class InformationManagement(BasePage):
     lastPage1_button_lco=(By.XPATH,"html/body/div[4]/div[2]/form[2]/p/a[11]")
     # 首页、下一页、上一页、尾页都存在时，定位下一页
     nextPage1_button_loc=(By.XPATH,"html/body/div[4]/div[2]/form[2]/p/a[10]")
+    # 定位 每页显示10条时，当前列表最后一条的序号
+    page10Num_loc=(By.XPATH,"html/body/div[4]/div[2]/table/tbody/tr[11]/td[1]")
 
 
     def clickNextPage(self):
         '''在首页时，点击下一页按钮'''
         self.find_element(*self.nextPage_button_loc).click()
+
+    def clickNextPage1(self):
+        '''首页、尾页都存在时，点击下一页按钮'''
+        self.find_element(*self.nextPage1_button_loc).click()
 
     def clickLastPage(self):
         '''在首页时，点击尾页按钮'''
@@ -101,6 +107,18 @@ class InformationManagement(BasePage):
     def clickPreviousPage(self):
         '''在尾页时，点击上一页按钮'''
         self.find_element(*self.previousPage_button_lco).click()
+
+    def returnFirstPage(self):
+        '''在尾页时，返回首页两个字'''
+        return self.find_element(*self.firstPage_button_lco).text
+
+    def returnLastPage(self):
+        '''在首页时，返回尾页两个字'''
+        return self.find_element(*self.lastPage_button_lco).text
+
+    def returnNowPageNum(self):
+        '''每页显示10条时，当前列表最后一条数据的序号'''
+        return self.find_element(*self.page10Num_loc).text
 
     def inInfoManage(self):
         # 进入管理中心--信息管理
@@ -152,7 +170,7 @@ class InformationManagement(BasePage):
 
     def queryIsNull(self):
         '''没有检索到复合检索条件的记录，返回提示信息“没有找到您要搜索的任务。”'''
-        message=self.find_element(*self.collegePage_sum_loc).text
+        message=self.find_element(*self.query_isNull_loc).text
         return message
 
     # 返回总的信息条数
@@ -173,15 +191,15 @@ class InformationManagement(BasePage):
         # 点击年份下拉框
         self.driver.find_element_by_css_selector(".ui-datepicker-year").click()
         # 选择年份
-        self.driver.find_element_by_xpath(".//*[@id='ui-datepicker-div']/div/div/select[1]/option[@value=%s]" % year1).click()
+        self.driver.find_element_by_xpath(".//*[@id='ui-datepicker-div']/div/div/select[1]/option[@value=%r]" % year1).click()
         sleep(2)
         # 点击月份下拉框
         self.driver.find_element_by_css_selector(".ui-datepicker-month").click()
         # 选择月份
-        self.driver.find_element_by_xpath(".//*[@id='ui-datepicker-div']/div/div/select[2]/option[%s]" % month1).click()
+        self.driver.find_element_by_xpath(".//*[@id='ui-datepicker-div']/div/div/select[2]/option[%r]" % month1).click()
         sleep(2)
         # 选择日
-        self.driver.find_element_by_link_text("%s" %day1).click()
+        self.driver.find_element_by_link_text("%r" %day1).click()
         sleep(2)
 
     def queryEndTime(self,year2,month2,day2):
@@ -197,15 +215,15 @@ class InformationManagement(BasePage):
         # 点击年份下拉框
         self.driver.find_element_by_css_selector(".ui-datepicker-year").click()
         # 选择年份
-        self.driver.find_element_by_xpath(".//*[@id='ui-datepicker-div']/div/div/select[1]/option[@value=%s]" % year2).click()
+        self.driver.find_element_by_xpath(".//*[@id='ui-datepicker-div']/div/div/select[1]/option[@value=%r]" % year2).click()
         sleep(2)
         # 点击月份下拉框
         self.driver.find_element_by_css_selector(".ui-datepicker-month").click()
         # 选择月份
-        self.driver.find_element_by_xpath(".//*[@id='ui-datepicker-div']/div/div/select[2]/option[%s]" % month2).click()
+        self.driver.find_element_by_xpath(".//*[@id='ui-datepicker-div']/div/div/select[2]/option[%r]" % month2).click()
         sleep(2)
         # 选择日
-        self.driver.find_element_by_link_text("%s" %day2).click()
+        self.driver.find_element_by_link_text("%r" %day2).click()
         sleep(2)
 
     def inDetectResult(self):
