@@ -55,14 +55,79 @@ class DetectionResultPage(BasePage):
     # 定位 检测结果列表-第一条记录的作者
     resultList_author_loc=(By.XPATH,"html/body/div[4]/div[2]/table/tbody/tr[2]/td[5]/a")
 
-
+    # 定位每页显示按钮
+    paging_button_lco=(By.ID,"sel")
+    # 每页显示10
+    paging_button10_lco=(By.ID,"10")
+    # 每页显示20
+    paging_button20_lco=(By.ID,"20")
+    # 每页显示50
+    paging_button50_lco=(By.ID,"50")
     # 定位 记录总条数
     pageSum_loc=(By.XPATH,"html/body/div[4]/div[2]/form[2]/p/span[1]/b")
+    # 选择每页显示10条后，返回列表的序号10
+    select10_num_loc=(By.XPATH,"html/body/div[4]/div[2]/table/tbody/tr[11]/td[2]")
+    # 选择每页显示20条后，返回列表的序号20
+    select20_num_loc=(By.XPATH,"html/body/div[4]/div[2]/table/tbody/tr[21]/td[2]")
+    # 选择每页显示50条后，返回列表的序号50
+    select50_num_loc=(By.XPATH,"html/body/div[4]/div[2]/table/tbody/tr[51]/td[2]")
+    # 位于首页时，定位下一页按钮
+    nextPage_button_loc=(By.XPATH,"html/body/div[4]/div[2]/form[2]/p/a[8]")
+    # 位于首页时，定位尾页按钮
+    lastPage_button_lco=(By.XPATH,"html/body/div[4]/div[2]/form[2]/p/a[9]")
+    # 位于尾页时，定位上一页按钮
+    previousPage_button_lco=(By.XPATH,"html/body/div[4]/div[2]/form[2]/p/a[2]")
+    # 位于尾页时，定位首页按钮
+    firstPage_button_lco=(By.XPATH,"html/body/div[4]/div[2]/form[2]/p/a[1]")
+    # 首页、下一页、上一页、尾页都存在时，定位尾页
+    lastPage1_button_lco=(By.XPATH,"html/body/div[4]/div[2]/form[2]/p/a[11]")
+    # 首页、下一页、上一页、尾页都存在时，定位下一页
+    nextPage1_button_loc=(By.XPATH,"html/body/div[4]/div[2]/form[2]/p/a[10]")
+    # 定位 每页显示10条时，当前列表最后一条的序号
+    page10Num_loc=(By.XPATH,"html/body/div[4]/div[2]/table/tbody/tr[11]/td[2]")
+
+    # 定位 简明报告1.0
+    simpleReport1_loc=(By.XPATH,"html/body/div[4]/div[2]/table/tbody/tr[2]/td[8]/a[2]")
 
 
 
+    def clickSimpleReport1(self):
+        '''简明报告1.0，进行下载'''
+        self.find_element(*self.simpleReport1_loc).click()
 
 
+
+    def clickNextPage(self):
+        '''在首页时，点击下一页按钮'''
+        self.find_element(*self.nextPage_button_loc).click()
+
+    def clickNextPage1(self):
+        '''首页、尾页都存在时，点击下一页按钮'''
+        self.find_element(*self.nextPage1_button_loc).click()
+
+    def clickLastPage(self):
+        '''在首页时，点击尾页按钮'''
+        self.find_element(*self.lastPage_button_lco).click()
+
+    def clickFirstPage(self):
+        '''在尾页时，点击首页按钮'''
+        self.find_element(*self.firstPage_button_lco).click()
+
+    def clickPreviousPage(self):
+        '''在尾页时，点击上一页按钮'''
+        self.find_element(*self.previousPage_button_lco).click()
+
+    def returnFirstPage(self):
+        '''在尾页时，返回首页两个字'''
+        return self.find_element(*self.firstPage_button_lco).text
+
+    def returnLastPage(self):
+        '''在首页时，返回尾页两个字'''
+        return self.find_element(*self.lastPage_button_lco).text
+
+    def returnNowPageNum(self):
+        '''每页显示10条时，当前列表最后一条数据的序号'''
+        return self.find_element(*self.page10Num_loc).text
 
     def clickIsTroubleFile(self):
         '''点击问题论文-勾选框，进行勾选和取消勾选操作'''
