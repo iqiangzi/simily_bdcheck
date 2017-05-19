@@ -354,7 +354,7 @@ class RunInformationManagement(myUnitChrome.UnitChrome):
         imagetest.insert_image(self.driver,"pagingButtonSelect50.jpg")
 
     def test_nextPage_run(self):
-        '''位于首页时，点击下一页按钮'''
+        '''位于首页时，点击下一页按钮，进入第二页'''
         # 登录本科生系统
         login=UserVer(self.driver)
         login.userLogin("collegecheck","f")
@@ -363,8 +363,15 @@ class RunInformationManagement(myUnitChrome.UnitChrome):
         # 位于首页时，点击下一页按钮，进入第二页
         im.clickNextPage()
         sleep(2)
+        result=im.returnNowPageNum()
+        print(result)
+        self.assertEqual(result,"20")
         # 点击下一页按钮，进入第三页
-        im.clickNextPage()
+        im.clickNextPage1()
+        sleep(2)
+        result=im.returnNowPageNum()
+        print(result)
+        self.assertEqual(result,"30")
         print("测试用例执行完成：位于首页时，点击下一页按钮。")
 
         # 对当前页面截图
@@ -381,6 +388,9 @@ class RunInformationManagement(myUnitChrome.UnitChrome):
         # 位于首页时，点击尾页按钮
         im.clickLastPage()
         sleep(2)
+        result=im.returnFirstPage()
+        print(result)
+        self.assertEqual(result,"首页")
         print("测试用例执行完成：位于首页时，点击尾页按钮。")
 
         # 对当前页面截图
@@ -416,9 +426,15 @@ class RunInformationManagement(myUnitChrome.UnitChrome):
         # 位于首页时，点击尾页按钮
         im.clickLastPage()
         sleep(2)
+        result=im.returnFirstPage()
+        print(result)
+        self.assertEqual(result,"首页")
         # 位于尾页，点击首页按钮
         im.clickFirstPage()
         sleep(2)
+        result=im.returnLastPage()
+        print(result)
+        self.assertEqual(result,'末页')
         print("测试用例执行完成：位于尾页时，点击首页按钮。")
 
         # 对当前页面截图
